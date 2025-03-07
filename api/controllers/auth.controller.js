@@ -16,6 +16,7 @@ const signup = async (req, res,) => {
         fullName,username, email, password: hashedPassword,role
     });
     try {
+        console.log("Saving User:", req.body);
         await newUser.save();
         res.json({ message: "sign up successfully" })
     } catch (error) {

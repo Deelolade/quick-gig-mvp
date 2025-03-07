@@ -1,6 +1,7 @@
 import { config } from 'dotenv'
 import mongoose from 'mongoose'
 config()
+mongoose.set("debug", true);
 export const connectDB = async()=>{
     try {
         await mongoose.connect(process.env.MONGO_URL,{
@@ -10,5 +11,6 @@ export const connectDB = async()=>{
         console.log("connected to mongodb database")
     } catch (err) {
         console.log("error connecting to mongodb:", err)
+        process.exit(1);
     }
 }
