@@ -88,7 +88,7 @@ const Navbar = () => {
                 </ul>
                 {hoveredItem !== null && (
                     <div
-                        className="absolute left-0 2xl:top-[8vh] lg:top-[10vh] w-full bg-black/50 backdrop-blur-sm text-white shadow-lg transition-all"
+                        className="absolute left-0 2xl:top-[8vh] lg:top-[10vh] w-full bg-black/50  z-50 backdrop-blur-lg text-white shadow-lg transition-all"
                         onMouseEnter={() => setHoveredItem(hoveredItem)} // Keep it open when inside
                         onMouseLeave={() => setHoveredItem(null)} // Close when leaving
                     >
