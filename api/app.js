@@ -10,7 +10,7 @@ app.get("/", (req, res)=>{
     res.json("Hello World");
 })
 
-app.use("/api", authRouter)
+app.use("/api/auth", authRouter)
 
 
 app.listen(port, (req, res)=>{
