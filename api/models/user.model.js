@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
+import crypto from "crypto";
 
 const userSchema = new mongoose.Schema({
     fullName:{
         type: String,
-        required: true,
-        trim: true
+        trim: true,
+        // required: false,
     },
     username:{
         type: String,
@@ -28,7 +29,6 @@ const userSchema = new mongoose.Schema({
     },
     bio:{
         type: String,
-        minLength: 50,
         maxlength: 300
     },
     skills:[
@@ -38,9 +38,9 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     role:{
+        required: true,
         type: String,
-        enum:["freelancer", "client"],
-        required: true
+        enum:["freelancer", "client","admin"],
     },
     socialLinks: {
         twitter: { type: String },
@@ -53,8 +53,8 @@ const userSchema = new mongoose.Schema({
     }, // Wallet balance
     paymentMethod: { 
         type: String, 
-        enum: ["PayPal", "Bank Transfer", "Crypto"], 
-        default: "Bank Transfer" 
+        enum: ["PayPal", "Bank Transfer", "Crypto", "None"], 
+        default: "None" 
     },
     rating: { 
         type: Number, 
@@ -64,7 +64,8 @@ const userSchema = new mongoose.Schema({
         {
             user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // Corrected ref structure
             comment: { type: String, required: true },
-            rating: { type: Number, required: true, min: 1, max: 5 } // Optional validation
+            rating: { type: Number, required: true, min: 1, max: 5 }, // Optional validation
+            createdAt: { type: Date, default: Date.now },
         }
     ],
     isVerified: { 
@@ -85,6 +86,10 @@ const userSchema = new mongoose.Schema({
     },
 {timestamps:true}
 )
+userSchema.methods.generateVerificationToken = function () {
+    this.verificationToken = crypto.randomBytes(32).toString("hex");
+    this.verificationTokenExpires = Date.now() + 3600000; // Expires in 1 hour
+};
 
 const User = mongoose.model('User', userSchema)
 export default User
