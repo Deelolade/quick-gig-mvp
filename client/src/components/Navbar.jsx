@@ -3,20 +3,21 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
     const [hoveredItem, setHoveredItem] = useState(null);
+    const [hiddenMenu, setHiddenMenu] = useState(false)
     const navItems = [
         {
             name: "Features",
             content: (
                 <div className=" flex  space-x-20 p-4">
                     <ul className='font-semibold'>
-                    <li className='my-2'>Job Posts</li>
-                    <li className='my-2'>Candidates</li>
-                    <li className='my-2'>Interviews</li>
-                </ul>
-                <ul className='font-semibold'>
-                    <li className='my-2'>Assignments</li>
-                    <li className='my-2'>Invoices</li>
-                </ul>
+                        <li className='my-2'>Job Posts</li>
+                        <li className='my-2'>Candidates</li>
+                        <li className='my-2'>Interviews</li>
+                    </ul>
+                    <ul className='font-semibold'>
+                        <li className='my-2'>Assignments</li>
+                        <li className='my-2'>Invoices</li>
+                    </ul>
                 </div>
             ),
         },
@@ -24,30 +25,30 @@ const Navbar = () => {
             name: "Roles",
             content: (
                 <div className=" flex  space-x-20 p-4">
-                <ul className='font-semibold'>
-                <li className='my-2'>Marketing</li>
-                <li className='my-2'>Growth Marketer</li>
-                <li className='my-2'>Product Marketer</li>
-                <li className='my-2'>Email Marketer</li>
-            </ul>
-            <ul className='font-semibold'>
-                <li className='my-2'>Design</li>
-                <li className='my-2'>Graphics Designer</li>
-                <li className='my-2'>UI Designer</li>
-                <li className='my-2'>Web Designer</li>
-                </ul>
-                <ul className='font-semibold'>
-                <li className='my-2'>Content</li>
-                <li className='my-2'>Social Media Manager</li>
-                <li className='my-2'>Content Marketer</li>
-                <li className='my-2'>Copywriter</li>
-                </ul>
-            </div>
+                    <ul className='font-semibold'>
+                        <li className='my-2'>Marketing</li>
+                        <li className='my-2'>Growth Marketer</li>
+                        <li className='my-2'>Product Marketer</li>
+                        <li className='my-2'>Email Marketer</li>
+                    </ul>
+                    <ul className='font-semibold'>
+                        <li className='my-2'>Design</li>
+                        <li className='my-2'>Graphics Designer</li>
+                        <li className='my-2'>UI Designer</li>
+                        <li className='my-2'>Web Designer</li>
+                    </ul>
+                    <ul className='font-semibold'>
+                        <li className='my-2'>Content</li>
+                        <li className='my-2'>Social Media Manager</li>
+                        <li className='my-2'>Content Marketer</li>
+                        <li className='my-2'>Copywriter</li>
+                    </ul>
+                </div>
             ),
         },
         {
             name: "For Talent",
-            
+
         },
         {
             name: "About",
@@ -71,11 +72,11 @@ const Navbar = () => {
     ]
     return (
         <div className='bg-black' onMouseLeave={() => setHoveredItem(null)} >
-            <nav className="navbar bg-black text-white flex h-[10vh] 2xl:h-[8vh] 2xl:w-[60%] lg:w-[90%] justify-between items-center mx-auto">
-                <ul className="nav-links flex space-x-4 justify-center items-center">
+            <nav className="navbar px-6 bg-black text-white flex h-[10vh] 2xl:h-[8vh] 2xl:w-[70%] lg:w-[95%] justify-between items-center mx-auto">
+                <ul className="nav-links flex space-x-4 justify-center items-center ">
                     <h1 className="text-3xl mb-2 bg-red-50 font-bold bg-gradient-to-r from-blue-500 to-red-500 bg-clip-text text-transparent">Quick~Gig</h1>
                     {navItems.map((item, index) => (
-                        <div key={index} className="relative font-bold">
+                        <div key={index} className="relative font-bold  hidden md:hidden lg:flex  ">
                             {/* Navigation Item */}
                             <button
                                 onMouseEnter={() => setHoveredItem(index)}
@@ -88,7 +89,7 @@ const Navbar = () => {
                 </ul>
                 {hoveredItem !== null && (
                     <div
-                        className="absolute left-0 2xl:top-[8vh] lg:top-[10vh] w-full bg-black/50  z-50 backdrop-blur-lg text-white shadow-lg transition-all"
+                        className="absolute left-0 hidden md:block md:top-[10vh] 2xl:top-[8vh] lg:top-[10vh] w-full bg-black/70  z-50 backdrop-blur-xl text-white shadow-lg transition-all"
                         onMouseEnter={() => setHoveredItem(hoveredItem)} // Keep it open when inside
                         onMouseLeave={() => setHoveredItem(null)} // Close when leaving
                     >
@@ -98,11 +99,33 @@ const Navbar = () => {
                     </div>
                 )}
 
-                <div className="nav-buttons space-x-8">
-                    <button className='bg-[#1A1A1A] hover:bg-[#333333] py-2 px-4 text-white font-semibold rounded-full'>Sign In</button>
-                    <button className='bg-white py-2 px-4 text-black font-semibold rounded-full'>Start Hiring Talent </button>
+                <div className="nav-buttons space-x-8 flex ">
+                    <Link to="/signin" className='bg-[#1A1A1A] hover:bg-[#333333] py-2 px-4 text-white font-semibold rounded-full hidden md:flex lg:flex'>Sign In</Link>
+                    <Link to='/role' className='bg-white py-2 px-4 text-black font-semibold rounded-full hidden md:flex lg:flex'>Start Hiring Talent </Link>
+                    <button className=" hover:bg-[#1A1A1A] py-2 px-2 rounded transition lg:hidden" onClick={() => setHiddenMenu((prev) => !prev)}>
+                        <div className="w-5 h-[2px] mb-[3px] bg-white"></div>
+                        <div className="w-5 h-[2px] mb-[3px] bg-white"></div>
+                        <div className="w-5 h-[2px] mb-[3px] bg-white"></div>
+                    </button>
                 </div>
             </nav>
+            {hiddenMenu && (
+                <div className=" bg-black/70  z-50 backdrop-blur-sm h-screen w-screen fixed ">
+                    {hiddenMenu && (navItems.map((item, idx) => (
+                        <ul key={idx} className={`  text-white px-5 py-2`}>
+                            <li className='hover:bg-[#333333] px-2 py-1 rounded'>{item.name} </li>
+                        </ul>
+                    )))}
+                    <div className="mx-auto mt-5 items-center flex flex-col  justify-center  p-8">
+                    <Link to='/signin' className='py-2 px-4 w-52 text-white  hover:bg-[#333333] font-semibold rounded-full text-center'>Sign In</Link>
+                    <Link to='/role' className=' py-2 px-4 w-52 text-white  hover:bg-[#333333] font-semibold rounded-full text-center'>Start Hiring Talent </Link>
+                    </div>
+                    <button onClick={() => setHiddenMenu((prev) => !prev)} className=' mx-auto mt-5 items-center flex flex-col  justify-center  p-8 rounded-full hover:bg-[#333333]'>
+                        <div className="absolute w-7 h-[2px] mb-[3px] bg-white rotate-45"></div>
+                        <div className="absolute w-7 h-[2px] mb-[3px] bg-white -rotate-45"></div>
+                    </button>
+                </div>
+            )}
         </div>
     )
 }

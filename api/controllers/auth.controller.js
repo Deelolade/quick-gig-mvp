@@ -8,8 +8,8 @@ import { errorHandler } from "../utils/error.js";
 const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-        user: process.env.EMAIL_USER, // Change to your email
-        pass: process.env.EMAIL_PASS, // Change to your email password
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS, 
     },
 });
 const sendVerificationEmail = async (email, token) => {
@@ -43,9 +43,9 @@ const sendVerificationEmail = async (email, token) => {
 };
 export const signup = async (req, res, next) => {
     try {
-        const { username, email, password, role } = req.body;
+        const { fullName,userName, email, password, role } = req.body;
         // vaildate users 
-        if (!username || !email || !password || !role || username === "" || email === "" || password === "" || role === "") {
+        if (!fullName ||!userName || !email || !password || !role || fullName==="" || userName === "" || email === "" || password === "" || role === "") {
             return next(errorHandler(400, "All fields are required"));
         };
 
@@ -64,7 +64,8 @@ export const signup = async (req, res, next) => {
         // Create new user with verification token
         const verificationToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1h" });
         const newUser = new User({
-            username,
+            fullName,
+            userName,
             email,
             password: hashedPassword,
             isVerified: false,
@@ -132,12 +133,50 @@ export const signIn = async (req, res, next) => {
         if (!validPassword) {
             next(errorHandler(400, "invalid Password"))
         }
-        const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" })
+        const token = jwt.sign({ id: validUser._id, role: validUser.role }, process.env.JWT_SECRET, { expiresIn: "7d" })
         const { password: pass, ...rest } = validUser._doc
         res.status(200).cookie("access_token", token,
             { httpOnly: true }
         ).json({ message: "Login successful", token, user: rest });
     } catch (err) {
         return next(err)
+    }
+}
+export const google = async(req, res, next)=>{
+    const {userName,fullName, email, photo, role}=  req.body;
+
+    try {
+        const user = await User.findOne({email})
+        if(user){
+            const token = jwt.sign({id:user._id, isVerified: user.isVerified}, process.env.JWT_SECRET);
+            const {password, ...rest }= user._doc;
+            res.status(200).cookie("access_token", token, {
+                httpOnly: true,
+            }).json(rest)
+        }
+        else{
+            const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+            const hashedPassword = bcrypt.hashSync(generatedPassword,  10)
+
+            const newUser = new User({
+                fullName,
+                userName,
+                email,
+                password:hashedPassword,
+                role:role,
+                profilePicture: photo,
+                isVerified:true,
+            });
+            await newUser.save().catch(error => next(error));
+            const token =  jwt.sign({id:newUser._id, isAdmin: newUser.isAdmin}, process.env.JWT_SECRET);
+            const {password, ...rest}= newUser._doc;
+            res.status(200).cookie("access_token", token, {
+                httpOnly: true,
+            })
+            .json(rest)
+        }
+    } catch (error) {
+        next(error)
+        
     }
 }
