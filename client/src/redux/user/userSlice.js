@@ -20,6 +20,7 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = null 
             state.isAuthenticated = true;
+            // localStorage.setItem('token', action.payload.token);
         },
         signInFailure: ( state, action) =>{
             state.loading = false;

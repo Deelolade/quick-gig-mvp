@@ -31,10 +31,11 @@ const Oauth = () => {
           email: resultFromGoogle.user.email,
           photo: resultFromGoogle.user.photoURL,
           role: selectedRole,
-        })
+        }),
+        credentials: 'include',
       })
       const data = await res.json();
-      console.log(data)
+      // console.log(data)
       if (data.success === false) {
         dispatch(signInFailure(error.message));
         const errorMessage = err.response?.data?.message || "Signup failed. Please try again.";

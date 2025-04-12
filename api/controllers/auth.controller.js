@@ -121,20 +121,22 @@ export const signIn = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password || email === "" || password === "") {
-        next(errorHandler(400, "All fields are required"))
+        return next(errorHandler(400, "All fields are required"))
     }
 
     try {
         const validUser = await User.findOne({ email })
         if (!validUser) {
-            next(errorHandler(400, "user not found]"))
+            return next(errorHandler(400, "user not found"))
         }
         const validPassword = bcrypt.compareSync(password, validUser.password);
         if (!validPassword) {
-            next(errorHandler(400, "invalid Password"))
+            return next(errorHandler(400, "invalid Password"))
         }
         const token = jwt.sign({ id: validUser._id, role: validUser.role }, process.env.JWT_SECRET, { expiresIn: "7d" })
         const { password: pass, ...rest } = validUser._doc
+        console.log("Generated Token:", token);
+
         res.status(200).cookie("access_token", token,
             { httpOnly: true }
         ).json({ message: "Login successful", token, user: rest });

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import OAuth from "../components/OAuth";
 import { FaApple, FaEye, FaEyeSlash } from 'react-icons/fa';
-import {  useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; 
+import "react-toastify/dist/ReactToastify.css";
 import Oauth from "../components/Oauth";
 import { signInFailure, signInSuccess, signInStart } from "../redux/user/userSlice";
 
@@ -20,7 +20,7 @@ const SignIn = () => {
         email: "",
         password: "",
     });
-    const selectedRole = useSelector((state)=> state.user.selectedRole)
+    const selectedRole = useSelector((state) => state.user.selectedRole)
     // Handle form input changes
 
 
@@ -28,12 +28,12 @@ const SignIn = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handlePasswordToggle = ()=> {
-        if(passwordType === "password"){
+    const handlePasswordToggle = () => {
+        if (passwordType === "password") {
             setPasswordType("text")
             setPasswordIcon(FaEyeSlash)
         }
-        if(passwordType === "text"){
+        if (passwordType === "text") {
             setPasswordType("password")
             setPasswordIcon(FaEye)
         }
@@ -55,36 +55,39 @@ const SignIn = () => {
         if (!validate()) {
             return;
         }
-        if ( !formData.email || !formData.password) {
+        if (!formData.email || !formData.password) {
             return setErrors("please fill out all fields");
         }
         try {
             dispatch(signInStart());
             const res = await fetch("http://localhost:5500/api/auth/signin", {
-                
+
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: 'include',
                 body: JSON.stringify({
-                ...formData,
-                role: selectedRole,})
+                    ...formData,
+                    role: selectedRole,
+                }),
             });
             const data = await res.json();
-            console.log(data);
-            toast.success("Signed in successful! 🎉");
-
+            // console.log(data)
             if (!res.ok) {
                 dispatch(signInFailure(data.message));
-                return setErrors("Error posting data");
-            }else{
-                dispatch(signInSuccess(data));
-            setSuccessMessage(true);
-            setTimeout(() => navigate("/dashboard"), 2000);
+                toast.error(data.message || "Signin failed.");
+                return;
+            }else {
+                dispatch(signInSuccess(data.user));
+                setSuccessMessage(true);
+                toast.success("Signed in successful! 🎉");
+                setTimeout(() => navigate("/dashboard"), 2000);
             }
-            
+
         } catch (error) {
             dispatch(signInFailure(error.message));
+            toast.error("Something went wrong. Please try again.");
         }
     };
     return (
@@ -99,17 +102,17 @@ const SignIn = () => {
                     </div>
                 )}
                 <form onSubmit={handleSubmit} className="space-y-4 ">
-                <div className="flex flex-col justify-between md:flex-row ">
-                    <div className="apple  w-[100%] md:w-[48%] flex items-center justify-center py-2 md:py-2 px-3 border border-black rounded-full text-[14px]">
-                        <FaApple className="mx-4 w-4 h-4" />continue with Apple
+                    <div className="flex flex-col justify-between md:flex-row ">
+                        <div className="apple  w-[100%] md:w-[48%] flex items-center justify-center py-2 md:py-2 px-3 border border-black rounded-full text-[14px]">
+                            <FaApple className="mx-4 w-4 h-4" />continue with Apple
+                        </div>
+                        <Oauth />
                     </div>
-                    <Oauth/>
-                </div>
-                <div className="flex items-center justify-center gap-4 mt-6">
-                    <div className="h-[1px] w-[40%] bg-gray-300"></div>
-                    <span className="text-gray-700">OR</span>
-                    <div className="h-[1px] w-[40%] bg-gray-300"></div>
-                </div>
+                    <div className="flex items-center justify-center gap-4 mt-6">
+                        <div className="h-[1px] w-[40%] bg-gray-300"></div>
+                        <span className="text-gray-700">OR</span>
+                        <div className="h-[1px] w-[40%] bg-gray-300"></div>
+                    </div>
                     {/* Email Field */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
@@ -127,7 +130,7 @@ const SignIn = () => {
                             <p className="text-red-500 text-sm">{errors.email}</p>
                         )}
                     </div>
-                    
+
                     {/* Password Field */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
