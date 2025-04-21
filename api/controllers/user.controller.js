@@ -22,3 +22,16 @@ export const makeAdmin = async (req, res, next) => {
         next(errorHandler(500, "Internal Server Error"));
     }
 };
+export const getFreelancers = async (req, res, next) => {
+
+        try {
+            const allFreelancers = await User.find({ role: "freelancer" }).select('-password');
+            res.status(200).json({
+                success: true,
+                freelancers: allFreelancers,
+            })
+
+        } catch (error) {
+            next(error)
+        }
+    }

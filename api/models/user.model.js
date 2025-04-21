@@ -86,10 +86,10 @@ const userSchema = new mongoose.Schema({
     },
 {timestamps:true}
 )
-userSchema.methods.generateVerificationToken = function () {
-    this.verificationToken = crypto.randomBytes(32).toString("hex");
-    this.verificationTokenExpires = Date.now() + 3600000; // Expires in 1 hour
-};
+// userSchema.methods.generateVerificationToken = function () {
+//     this.verificationToken = crypto.randomBytes(32).toString("hex");
+//     this.verificationTokenExpires = Date.now() + 3600000; // Expires in 1 hour
+// };
 
 const User = mongoose.model('User', userSchema)
 export default User

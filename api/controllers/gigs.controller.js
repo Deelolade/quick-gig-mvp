@@ -15,6 +15,9 @@ try {
 }    
 } 
 export const createGig = async (req, res, next) => {
+    console.log(req.body)
+    console.log("User making request:", req.user);
+
     try {
         const { title, description, price, category, deliveryTime } = req.body;
         if (!title || !description || !price || !category || !deliveryTime || title === "" || description === "" || price === "" || category === "" || deliveryTime ==="" ) {
@@ -30,10 +33,19 @@ export const createGig = async (req, res, next) => {
             client: req.user.id
         })
         await newGig.save()
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             message: "gig created successfully!"
         });
+    } catch (error) {
+        next(error)
+    }
+}
+export const getGigCount = async (req, res, next)=>{
+    try {
+        const client = req.user.id;
+        const count = await Gigs.countDocuments({client})
+        res.status(200).json({count})
     } catch (error) {
         next(error)
     }
