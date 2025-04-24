@@ -36,16 +36,34 @@ const BrowseFreelancers = () => {
         {
           freelancer.map((user, idx)=>{
             return (
-              <div className="w-full md:w-[350px] bg-white shadow-md border border-gray-200 rounded-2xl p-4 transition hover:shadow-lg" key={idx}>
-            <img src={user.profilePicture} alt="profile" className=' bg-red-300 w-[100%] object-cover h-60'/>
-            <div className=" mt-4">
-              <h1 className='text-xl font-semibold'>{user.fullName}</h1>
-              <p className='bg-green-400/50 rounded-full mt-2 px-2'>react javascript nodejs php laravel</p>
-              <p className="text-sm text-gray-700 mb-3 line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, aliquid eius. A, magni tempora!</p>
-              <p className='bg-green-400/50 rounded-full  mt-2 px-2'>verified : true</p>
-              <button className='bg-green-500 my-4 py-2 px-4 rounded-3xl hover:bg-green-400 text-lg font-medium text-white'>  View Profile</button>
-            </div>
-          </div>
+              <div className="w-full md:w-[350px] bg-white shadow-md border border-gray-200 rounded-2xl p-4 transition transform hover:scale-105 hover:shadow-xl" key={idx}>
+  <img src={user.profilePicture} alt="profile" className="w-full h-48 object-cover rounded-xl" />
+  <div className="mt-4">
+    <h1 className="text-xl font-semibold">{user.fullName}</h1>
+    {/* Skills Tags */}
+    <div className="flex flex-wrap gap-2 mt-2">
+      {user.skills?.map((skill, i) => (
+        <span key={i} className="bg-green-100 text-green-800 px-3 py-1 text-xs rounded-full">
+          {skill}
+        </span>
+      ))}
+    </div>
+    {/* Bio */}
+    <p className="text-sm text-gray-700 mt-3 line-clamp-3">
+      {user.bio || "No bio provided."}
+    </p>
+    {/* Verified Status */}
+    <p className="flex items-center gap-1 text-green-600 text-sm mt-2">
+      <span className="inline-block w-2 h-2 bg-green-500 rounded-full" />
+      Verified Profile
+    </p>
+    {/* Button */}
+    <button className="bg-green-500 hover:bg-green-600 transition text-white py-2 px-4 rounded-full mt-4 w-full font-medium">
+      View Profile
+    </button>
+  </div>
+</div>
+
 
 
             )

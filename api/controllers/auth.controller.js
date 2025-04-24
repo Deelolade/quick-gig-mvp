@@ -8,8 +8,8 @@ import { errorHandler } from "../utils/error.js";
 const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS, 
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
     },
 });
 const sendVerificationEmail = async (email, token) => {
@@ -43,9 +43,9 @@ const sendVerificationEmail = async (email, token) => {
 };
 export const signup = async (req, res, next) => {
     try {
-        const { fullName,userName, email, password, role } = req.body;
+        const { fullName, userName, email, password, role } = req.body;
         // vaildate users 
-        if (!fullName ||!userName || !email || !password || !role || fullName==="" || userName === "" || email === "" || password === "" || role === "") {
+        if (!fullName || !userName || !email || !password || !role || fullName === "" || userName === "" || email === "" || password === "" || role === "") {
             return next(errorHandler(400, "All fields are required"));
         };
 
@@ -144,61 +144,63 @@ export const signIn = async (req, res, next) => {
         return next(err)
     }
 }
-export const google = async(req, res, next)=>{
-    const {userName,fullName, email, photo, role}=  req.body;
+export const google = async (req, res, next) => {
+    const { userName, fullName, email, photo, role } = req.body;
 
     try {
-        const user = await User.findOne({email})
-        if(user){
-            const token = jwt.sign({id:user._id, isVerified: user.isVerified}, process.env.JWT_SECRET);
-            const {password, ...rest }= user._doc;
+        const user = await User.findOne({ email })
+        if (user) {
+            const token = jwt.sign({ id: user._id, isVerified: user.isVerified }, process.env.JWT_SECRET);
+            const { password, ...rest } = user._doc;
             res.status(200).cookie("access_token", token, {
                 httpOnly: true,
             }).json(rest)
         }
-        else{
+        else {
             const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
-            const hashedPassword = bcrypt.hashSync(generatedPassword,  10)
+            const hashedPassword = bcrypt.hashSync(generatedPassword, 10)
 
             const newUser = new User({
                 fullName,
                 userName,
                 email,
-                password:hashedPassword,
-                role:role,
+                password: hashedPassword,
+                role: role,
                 profilePicture: photo,
-                isVerified:true,
+                isVerified: true,
             });
             await newUser.save().catch(error => next(error));
-            const token =  jwt.sign({id:newUser._id, isAdmin: newUser.isAdmin}, process.env.JWT_SECRET);
-            const {password, ...rest}= newUser._doc;
+            const token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET);
+            const { password, ...rest } = newUser._doc;
             res.status(200).cookie("access_token", token, {
                 httpOnly: true,
             })
-            .json(rest)
+                .json(rest)
         }
     } catch (error) {
         next(error)
-        
+
     }
 }
-export const updateUser = async (req, res, next)=>{
+export const updateUser = async (req, res, next) => {
     if (!req.params.userId) {
         return res.status(400).json({ message: "User ID is missing in the request URL" });
     }
-
-    // console.log("User ID from token:", req.user.id);
-    // console.log("User ID from params:", req.params.userId);
     if (req.user.id !== req.params.userId) {
         return next(errorHandler(403, "You are not allowed to update this user"))
     }
 
     if (req.body.password) {
-        if (req.body.password.length < 6) {
-            return next(errorHandler(400, "Password must be atleast five characters"))
+        // 1. Check if confirmPassword exists and matches
+        if (req.body.password !== req.body.confirmPassword) {
+            return next(errorHandler(400, "Passwords do not match"));
         }
-        
+        if (req.body.password.length < 6) {
+            return next(errorHandler(400, "Password must be atleast six characters"))
+        }
+
         req.body.password = bcrypt.hashSync(req.body.password, 10);
+        delete req.body.confirmPassword
     }
     if (req.body.userName) {
         if (req.body.userName.length < 7 || req.body.userName.length > 20) {
@@ -207,46 +209,47 @@ export const updateUser = async (req, res, next)=>{
         if (req.body.userName.includes(" ")) {
             return next(errorHandler(400, "Username can not contain space"))
         }
-        // if (req.body.userName !== req.body.userName.toLowerCase()) {
-        //     return next(errorHandler(400, "Username must be lowercase"))
-        // }
+        if (req.body.userName !== req.body.userName.toLowerCase()) {
+            return next(errorHandler(400, "Username must be lowercase"))
+        }
         if (!req.body.userName.match(/^[a-zA-Z0-9]+$/)) {
             return next(errorHandler(400, "Username can only contain letters and numbers"))
         }
     }
-    if(req.body.bio){
-        if(req.body.bio.length < 50 || req.body.bio.length > 500){
+    if (req.body.bio) {
+        if (req.body.bio.length < 50 || req.body.bio.length > 500) {
             return next(errorHandler(400, "Bio description must be between 50 and 500 characters."))
-        
+
         }
     }
-    if(req.user.role){
+    if (req.user.role) {
         if (req.user.role === "client" && req.body.skills) {
             delete req.body.skills;
         }
     }
-      
+
     try {
-            
-        const updateUser = await User.findByIdAndUpdate(req.params.userId,{
+
+        const updateUser = await User.findByIdAndUpdate(req.params.userId, {
             $set: {
                 userName: req.body.userName,
                 fullName: req.body.fullName,
                 email: req.body.email,
                 profilePicture: req.body.profilePicture,
                 password: req.body.password,
+                confirmPassword: req.body.confirmPassword,
                 bio: req.body.bio,
                 skills: req.body.skills,
                 location: req.body.location,
                 socialLinks: req.body.socialLinks,
-                paymentMethod:req.body.paymentMethod
+                paymentMethod: req.body.paymentMethod
             },
-        },{new: true});
+        }, { new: true });
         // console.log(updateUser)
-        const {password, ...rest} = updateUser._doc;
+        const { password, ...rest } = updateUser._doc;
         res.status(200).json(rest);
     } catch (error) {
         next(error)
-        
+
     }
 }

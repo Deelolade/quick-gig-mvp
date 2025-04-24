@@ -5,6 +5,7 @@ import userRouter from './routes/user.route.js';
 import gigRouter from './routes/gig.route.js';
 import cors from "cors"
 import cookieParser from 'cookie-parser';
+import proposalRouter from './routes/proposal.route.js';
 
 const port =  5500;
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use("/api/auth", authRouter)
 app.use("/api/users", userRouter)
 app.use("/api", gigRouter)
+app.use("/api", proposalRouter)
 
 
 app.listen(port, (req, res)=>{

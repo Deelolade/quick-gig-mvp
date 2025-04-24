@@ -20,9 +20,9 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = null 
             state.isAuthenticated = true;
-            // localStorage.setItem('token', action.payload.token);
+            state.selectedRole = action.payload.role || null;
         },
-        signInFailure: ( state, action) =>{
+        signInFailure: ( state) =>{
             state.loading = false;
             state.error = null;
             state.isAuthenticated = false;
@@ -34,8 +34,8 @@ const userSlice = createSlice({
             state.isAuthenticated = false;
             state.selectedRole = null;
         },
-        selectRole: (state, action) =>{
-            state.selectedRole = action.payload;
+        selectRole: (state,action ) =>{
+            state.selectedRole = action.payload || null;
         },
         updateStart: (state) => {
             state.loading = true;

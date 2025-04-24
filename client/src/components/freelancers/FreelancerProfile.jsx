@@ -1,67 +1,117 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import FreelancerSideBar from '../freelancers/FreelancerSideBar'
 import axios from "axios"
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFailure, updateStart, updateSuccess } from '../../redux/user/userSlice';
-
+import { toast } from "react-toastify";
+import { GiCancel } from "react-icons/gi";
+import "react-toastify/dist/ReactToastify.css";
 
 const ClientProfile = () => {
-  const dispatch = useDispatch(); 
-
+  const dispatch = useDispatch();
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFileUrl, setImageFileUrl] = useState(null);
+  const [socialLinks, setSocialLinks] = useState({
+    twitter: "",
+    linkedin: "",
+    portfolio: ""
+  })
   const [formData, setFormData] = useState({})
+  const filePickerRef = useRef()
   const { currentUser } = useSelector(state => state.user)
+  const [skillInput, setSkillInput] = useState('');
+  const [skills, setSkills] = useState([]);
 
-  const handleImageChange = async(e)=>{
+  const handleImageChange = async (e) => {
+    // setImageFile(e.target.files[0])
     const file = e.target.files[0]
-    if(!file) return
+    if (file) {
+      setImageFile(file)
+    }
+
+  }
+
+const addSkill = () => {
+  if (skillInput.trim()) {
+    setSkills([...skills, skillInput.trim()]);
+    setSkillInput('');
+  }
+};
+const removeSkill = (indexToRemove) => {
+  setSkills(skills.filter((_, idx) => idx !== indexToRemove));
+};
+
+  const uploadImage = async () => {
+    if (!imageFile) return;
     const data = new FormData()
-    data.append("file", file)
+    data.append("file", imageFile)
     data.append("upload_preset", "quick-gig")
     data.append("cloud_name", "dluhzoptp")
+    console.log(imageFile)
     try {
       const res = await axios.post("https://api.cloudinary.com/v1_1/dluhzoptp/image/upload", data)
-      console.log('Image uploaded:', res.data.secure_url);
-      return res.data.secure_url;
+      const url = res.data.secure_url;
+      console.log('Image uploaded:', url);
+      setImageFileUrl(url)
+      setFormData((prev) => ({ ...prev, profilePicture: url }))
     } catch (error) {
       console.error("image failed to upload", error)
     }
-    
   }
-  const handleChange =(e)=>{
-    setFormData({...formData,[e.target.id]:e.target.value})
+  useEffect(() => {
+    if (imageFile) {
+      uploadImage()
+    }
+  }, [imageFile])
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value })
   }
-  const handleSubmit = async (e)=>{
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     if (Object.keys(formData).length === 0) {
       return;
-  }
-    e.preventDefault()
+    }
+    const combinedFormData = {
+      ...formData,
+      skills,
+      socialLinks: Object.values(socialLinks).filter(Boolean),
+    }
     try {
       dispatch(updateStart())
-        const res = await axios.put(`http://localhost:5500/api/auth/update/${currentUser._id}`, formData,
-          {withCredentials: true}
-        )
-        dispatch(updateSuccess(res.data));
-        console.log("User updated:", res.data);
-  } catch (error) {
-      dispatch(updateFailure("error updating data",error.message))
+      const res = await axios.put(`http://localhost:5500/api/auth/update/${currentUser._id}`, combinedFormData,
+        { withCredentials: true }
+      )
+      dispatch(updateSuccess(res.data));
+      toast.success(res?.message || "User's Data successfully 🎉!!");
+      console.log("User updated:", res.data);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Something went wrong")
+      dispatch(updateFailure("error updating data", error.message))
+      console.log(error.message)
+    }
   }
+  const handleSocialChange = (e) => {
+    const { name, value } = e.target;
+    setSocialLinks((prev) => ({ ...prev, [name]: value }))
+
   }
   return (
-    <div className='flex justify-between  bg-gray-100 h-[100vh]'>
+    <div className='flex justify-between  bg-gray-100 min-h-screen'>
       <FreelancerSideBar />
-      <div className="dashboard w-[85%] bg-gray-100 h-[auto] ">
+      <div className="dashboard w-[85%]  min-h-screen bg-gray-100 ">
         <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
-          <h1 className='text-2xl font-semibold'>Browse Freelancers </h1>
+          <h1 className='text-3xl font-semibold'>Edit Profile</h1>
           <div className="">
-            <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
+            <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Client</button>
           </div>
         </nav>
-        <div className="max-w-2xl mx-auto px-4 py-8">
-          <h1 className="text-2xl font-semibold mb-6">Edit Profile</h1>
-
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            <input type="file" name="" id="profilePicture"  onChange={handleImageChange}/>
-            <img src="" alt="" className='w-52 h-52 rounded-full bg-red-300 mx-auto' />
+        <div className="max-w-2xl mx-auto px-4 py-32 ">
+          <form className=" max-w-xl space-y-5" onSubmit={handleSubmit}>
+            <input type="file" accept='image/*' id="profilePicture" onChange={handleImageChange} ref={filePickerRef} hidden />
+            <div className="relative" onClick={() => filePickerRef.current.click()} >
+              <img src={imageFileUrl || currentUser.profilePicture} alt="" className='w-52 h-52 rounded-full bg-red-300 mx-auto' />
+            </div>
             {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -69,6 +119,7 @@ const ClientProfile = () => {
                 type="text"
                 name="fullName"
                 id="fullName"
+                onChange={handleChange}
                 defaultValue={currentUser.fullName}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
               />
@@ -127,7 +178,7 @@ const ClientProfile = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
               <input
                 type="text"
-                name="location"
+                id="location"
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
               />
@@ -154,17 +205,32 @@ const ClientProfile = () => {
                 <div className="flex gap-2 mb-2">
                   <input
                     type="text"
+                    id='skills'
                     placeholder="e.g. JavaScript"
-                    onChange={handleChange}
+                    value={skillInput}
+                    onChange={(e) => setSkillInput(e.target.value)}
                     className="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
+                 
                   <button
                     type="button"
+                    onClick={addSkill}
                     className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                   >
                     Add
                   </button>
                 </div>
+                <div className="flex flex-wrap gap-2">
+                    {skills.map((skill, idx) => (
+                      <span
+                        key={idx}
+                        className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex space-x-2 items-center "
+                      >
+                        {skill}
+                        <GiCancel className='mx-2 text-red-400' onClick={()=>removeSkill(idx)}/>
+                      </span>
+                    ))}
+                  </div>
               </div>
             )}
             <div className="space-y-4">
@@ -176,7 +242,7 @@ const ClientProfile = () => {
                   type="url"
                   name="twitter"
                   placeholder="https://twitter.com/yourhandle"
-                  onChange={handleChange}
+                  onChange={handleSocialChange}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500"
                 />
               </div>
@@ -186,7 +252,7 @@ const ClientProfile = () => {
                 <input
                   type="url"
                   name="linkedin"
-                  onChange={handleChange}
+                  onChange={handleSocialChange}
                   placeholder="https://linkedin.com/in/yourname"
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500"
                 />
@@ -197,7 +263,7 @@ const ClientProfile = () => {
                 <input
                   type="url"
                   name="portfolio"
-                  onChange={handleChange}
+                  onChange={handleSocialChange}
                   placeholder="https://yourportfolio.com"
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500"
                 />

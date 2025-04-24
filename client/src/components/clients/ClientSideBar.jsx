@@ -6,9 +6,11 @@ import { FaMoneyCheckAlt } from "react-icons/fa";
 import { SlEnvolopeLetter } from "react-icons/sl";
 import { RiFileList2Fill } from "react-icons/ri";
 import { FaFileContract } from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
 import { RiContractFill } from "react-icons/ri";
 
 const ClientSideBar = () => {
+    const { currentUser } = useSelector(state => state.user)
     return (
         <div>
             <div className="sidebar bg-black w-[15%] h-[100%] fixed text-white px-5 py-4 flex flex-col justify-between shadow-md">
@@ -27,7 +29,7 @@ const ClientSideBar = () => {
                     </div>
                 </div>
                 <Link to='/profile' className="user-profile text-white mb-4  w-[70%] flex justify-evenly items-center">
-                    <img src="" alt="" className='w-12 h-12 bg-red-400 rounded-full ' />
+                    <img src={currentUser.profilePicture} alt="" className='w-12 h-12 bg-red-400 rounded-full ' />
                     <h1>Your Profile</h1>
                 </Link>
             </div>

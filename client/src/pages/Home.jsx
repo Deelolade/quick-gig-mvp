@@ -1,27 +1,30 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { IoSparklesOutline } from "react-icons/io5";
 import { SiMarketo } from "react-icons/si";
-import { FaSignsPost } from "react-icons/fa6";
+import { FaSignsPost, FaMoneyBillTrendUp, FaArrowRightLong } from "react-icons/fa6";
 import { HiOutlineUserGroup } from "react-icons/hi";
-import { FaSearchDollar } from "react-icons/fa";
 import { PiLightningBold } from "react-icons/pi";
 import { GiBrain } from "react-icons/gi";
 import { LuMessagesSquare } from "react-icons/lu";
 import { GrSatellite } from "react-icons/gr";
-import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { GiNigeria } from "react-icons/gi";
-
+import { FaSearchDollar } from "react-icons/fa";
 import Homevideo from "../assets/home-video.mp4";
 import Footer from "../components/Footer";
 
 const Home = () => {
+    const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.2 });
+    const { ref: refOne, inView: inviewOne } = useInView({ triggerOnce: false, threshold: 0.2 });
+    const { ref: refTwo, inView: inviewTwo } = useInView({ triggerOnce: false, threshold: 0.2 });
+    const { ref: refThree, inView: inviewThree } = useInView({ triggerOnce: false, threshold: 0.2 });
     return (
         <>
             <Navbar />
-            <div className=" bg-black h-screen ">
+            <div className=" bg-black h-auto min-h-screen mx-auto max-w-6xl overflow-hidden">
                 <div className="flex inset-0 -z-10 overflow-hidden">
                     <div className="absolute -z-10 inset-0 bg-black"></div>
                     <div className="absolute -z-9 top-36 right-0 w-96 h-96 bg-purple-600 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
@@ -234,7 +237,12 @@ const Home = () => {
                         }}
                     ></div>
                 </div>
-                <div className=" text-white relative h-auto z-10 mx-auto  top-52  text-left-center flex flex-col  justify-center items-center">
+                <motion.div
+                    ref={refOne}
+                    initial={{ opacity: 0, y: 0 }}
+                    animate={inviewOne ? { opacity: 1, y: 0 } : { opacity: 1, y: 50 }}
+                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                    className=" text-white relative h-auto z-10 mx-auto  top-52  text-left-center flex flex-col  justify-center items-center">
                     <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8">
                         <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
                         <span>QuickGig — Freelance. Fast. Together.</span>
@@ -294,13 +302,18 @@ const Home = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
                 {/* <div className=" z-50">
                     <video src={Homevideo} autoPlay loop></video>
                 </div> */}
             </div>
-            <section className="bg-blue-950 h-auto py-24 bg-gradient-to-b from-black/40 to-purple-800/35">
-                <div className=" flex justify-center items-center flex-col">
+            <section className="bg-blue-950 h-auto py-24 bg-gradient-to-b  mx-auto from-black/40 to-purple-800/35">
+                <motion.div
+                    ref={refTwo}
+                    initial={{ opacity: 0, y: 0 }}
+                    animate={inviewTwo ? { opacity: 1, y: 0 } : { opacity: 1, y: 50 }}
+                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                    className=" flex justify-center items-center flex-col">
                     <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8">
                         <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
                         <span className="">Why QuickGig — Freelance. Fast. Together.</span>
@@ -317,8 +330,13 @@ const Home = () => {
                         and grow. Need a quick fix or a fresh logo? Want to share ideas or
                         trends? QuickGig is built for you.
                     </p>
-                </div>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8 w-[70vw] mx-auto my-10">
+                </motion.div>
+                <motion.div
+                    ref={ref}
+                    initial={{ opacity: 0, y: 0 }}
+                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 50 }}
+                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                    className="grid grid-cols-1 max-w-6xl gap-6 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8 w-[70vw] mx-auto my-10">
                     <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-800 rounded-xl p-6 transition-all duration-300 group hover:border-purple-500/50 hover:bg-gray-900/80 hover:shadow-lg hover:shadow-purple-900/20 opacity-100 translate-y-0">
                         <div className="text-purple-500 font-bold text-3xl bg-purple-950  h-12 w-12 rounded-lg flex items-center justify-center">
                             <PiLightningBold className="  rounded-lg  " />
@@ -414,22 +432,90 @@ const Home = () => {
                             </p>
                         </div>
                     </div>
-                </div>
+                </motion.div>
+            </section>
+            <section className="bg-blue-950  h-auto py-24 bg-gradient-to-tr mx-auto overflow-hidden from-black/40 via-purple-600/30  to-purple-800/35">
+                <motion.div
+                    ref={ref}
+                    initial={{ opacity: 0, y: -50 }}
+                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                    className="relative max-w-6xl mx-auto ">
+                    <div className=" flex justify-center items-center flex-col mb-8">
+                        <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8">
+                            <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
+                            <span className="">Why QuickGig — Freelance. Fast. Together.</span>
+                        </div>
+                        <h1 className="text-5xl font-extrabold  text-white text-center ">
+                            How {" "}
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600">
+                                QuickGig?
+                            </span> Works
+                        </h1>
+                        <p className="text-lg text-gray-200 text-center mt-5 max-w-3xl">
+                            QuickGig is the freelance marketplace that brings Clients and
+                            Freelancers together not just to work.
+                        </p>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-12  ">
+                        {/* <div className="w-full absolute top-1/2 h-[3px] bg-purple-900/60 backdrop-blur-sm " /> */}
+                        <div className="text-center ">
+                            <div className="relative">
+                                <div className="w-16 h-16 rounded-full mx-auto bg-purple-500 bg-gradient-to-br via-blue-600/30 to-blue-600/60 text-center flex items-center justify-center text-white text-xl font-bold ">
+                                    1
+                                </div>
+                                <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-purple-500/10 rounded-full animate-pulse"> </span>
+                            </div>
+                            <h4 className="text-white text-2xl font-bold my-5 ">Hire fast.</h4>
+                            <p className=" text-gray-400 text-lg ">Post your gig in just a few clicks and start receiving proposals within minutes.</p>
+                        </div>
+                        <div className="text-center ">
+                            <div className="relative">
+                                <div className="w-16 h-16 rounded-full mx-auto bg-purple-500 bg-gradient-to-br via-blue-600/30 to-blue-600/60 text-center flex items-center justify-center text-white text-xl font-bold ">
+                                    2
+                                </div>
+                                <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-purple-500/10 rounded-full animate-pulse"> </span>
+                            </div>
+                            <h4 className="text-white text-2xl font-bold my-5">Work Smart.</h4>
+                            <p className=" text-gray-400 text-lg "> Ask questions, share updates, or just vibe with others in the QuickGig ecosystem.</p>
+                        </div>
+                        <div className="text-center ">
+                            <div className="relative">
+                                <div className="w-16 h-16 rounded-full mx-auto bg-purple-500 bg-gradient-to-br via-blue-600/30 to-blue-600/60 text-center flex items-center justify-center text-white text-xl font-bold ">
+                                    3
+                                </div>
+                                <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-purple-500/10 rounded-full animate-pulse"> </span>
+                            </div>
+                            <h4 className="text-white text-2xl font-bold my-5">Get gigs done.</h4>
+                            <p className=" text-gray-400 text-lg ">Send instant messages, share files, and keep your projects moving forward with smooth communication.</p>
+                        </div>
+                    </div>
+                    <div className="flex mt-16 mx-auto justify-center ">
+                        <button className="flex items-center  px-7 py-3 text-xl font-semibold rounded-md text-white bg-blue-800 bg-gradient-to-r from-purple-600  via-blue-500 to-blue-600 opacity-90 hover:opacity-100">
+                            Get Started <FaArrowRightLong className="ms-3" />
+                        </button>
+                    </div>
+                </motion.div>
             </section>
             <section className="bg-blue-950 h-auto py-16 bg-gradient-to-t">
-                <div className="my-24 flex justify-center items-center flex-col">
+                <motion.div
+                    ref={refThree}
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={inviewThree ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
+                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                    className="my-24 flex justify-center items-center flex-col">
                     <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8">
                         <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
                         <span className=" ">QuickGig — Freelance. Fast. Together.</span>
                     </div>
-                    <h1 className="text-5xl md:text-6xl  font-bold text-white leading-tight text-center">
+                    <h1 className="text-5xl   font-bold text-white leading-tight text-center">
                         Get Started With{" "}
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600">
                             Quick-Gig
                         </span>{" "}
                         Today.
                     </h1>
-                    <p className="mt-6 text-lg md:text-xl text-gray-300 max-w-4xl mx-auto text-center">
+                    <p className="mt-6 text-lg text-gray-300 max-w-4xl mx-auto text-center">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
                         iure quod assumenda aliquam voluptates sed reiciendis eligendi
                         repudiandae corporis labore.
@@ -439,9 +525,9 @@ const Home = () => {
                             Get Started <FaArrowRightLong className="ms-3" />
                         </button>
                     </div>
-                </div>
+                </motion.div>
             </section>
-            <Footer/>
+            <Footer />
         </>
     );
 };

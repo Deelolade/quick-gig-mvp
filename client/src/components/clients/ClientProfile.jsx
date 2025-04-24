@@ -1,58 +1,91 @@
-import { useState } from 'react'
-import ClientSideBar from './ClientSideBar'
+import { useState, useEffect, useRef } from 'react'
+import ClientSideBar from '../clients/ClientSideBar'
 import axios from "axios"
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFailure, updateStart, updateSuccess } from '../../redux/user/userSlice';
-// import { updateStart,updateSuccess } from '../../redux/user/userSlice';
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; 
 
 const ClientProfile = () => {
   const dispatch = useDispatch(); 
-
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFileUrl, setImageFileUrl] = useState(null);
   const [formData, setFormData] = useState({})
+  const filePickerRef = useRef()
+  const [ socialLinks, setSocialLinks]= useState({ 
+    twitter:"",
+    linkedin:"", 
+    portfolio:""
+  })
   const { currentUser } = useSelector(state => state.user)
 
   const handleImageChange = async(e)=>{
+    // setImageFile(e.target.files[0])
     const file = e.target.files[0]
-    if(!file) return
-    const data = new FormData()
-    data.append("file", file)
-    data.append("upload_preset", "quick-gig")
-    data.append("cloud_name", "dluhzoptp")
-    try {
-      const res = await axios.post("https://api.cloudinary.com/v1_1/dluhzoptp/image/upload", data)
-      console.log('Image uploaded:', res.data.secure_url);
-      return res.data.secure_url;
-    } catch (error) {
-      console.error("image failed to upload", error)
+    if (file) {
+      setImageFile(file)
     }
     
   }
+  const uploadImage = async()=>{
+    if(!imageFile) return;
+    const data = new FormData()
+    data.append("file", imageFile)
+    data.append("upload_preset", "quick-gig")
+    data.append("cloud_name", "dluhzoptp")
+    console.log(imageFile)
+    try {
+      const res = await axios.post("https://api.cloudinary.com/v1_1/dluhzoptp/image/upload", data)
+      const url = res.data.secure_url;
+      console.log('Image uploaded:', url );
+      setImageFileUrl(url)
+      setFormData((prev)=> ({...prev, profilePicture: url}))
+    } catch (error) {
+      console.error("image failed to upload", error)
+    }
+  }
+  useEffect(() => {
+    if (imageFile) {
+        uploadImage()
+    }
+}, [imageFile])
+
   const handleChange =(e)=>{
     setFormData({...formData,[e.target.id]:e.target.value})
   }
   const handleSubmit = async (e)=>{
+    e.preventDefault()
     if (Object.keys(formData).length === 0) {
       return;
   }
-    e.preventDefault()
+  const combinedFormData ={
+    ...formData,
+    socialLinks: Object.values(socialLinks).filter(Boolean),
+  }
     try {
       dispatch(updateStart())
-        const res = await axios.put(`http://localhost:5500/api/auth/update/${currentUser._id}`, formData,
+        const res = await axios.put(`http://localhost:5500/api/auth/update/${currentUser._id}`, combinedFormData,
           {withCredentials: true}
         )
         dispatch(updateSuccess(res.data));
+      toast.success(res?.message  || "User's Data successfully 🎉!!");
         console.log("User updated:", res.data);
   } catch (error) {
+    toast.error(error.response?.data?.message || "Something went wrong")
       dispatch(updateFailure("error updating data",error.message))
   }
   }
+  const handleSocialChange=(e)=>{
+    const { name, value} = e.target;
+    setSocialLinks((prev)=>({...prev, [name]:value}))
+
+  }
   return (
-    <div className='flex justify-between  bg-gray-100 h-[100vh]'>
+    <div className='flex justify-between  bg-gray-100 min-h-screen'>
       <ClientSideBar />
-      <div className="dashboard w-[85%] bg-gray-100 h-[auto] ">
+      <div className="dashboard w-[85%]  min-h-screen bg-gray-100 ">
         <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
-          <h1 className='text-2xl font-semibold'>Browse Freelancers </h1>
+          <h1 className='text-2xl font-semibold'>Profile</h1>
           <div className="">
             <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
           </div>
@@ -60,9 +93,11 @@ const ClientProfile = () => {
         <div className="max-w-2xl mx-auto px-4 py-8">
           <h1 className="text-2xl font-semibold mb-6">Edit Profile</h1>
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            <input type="file" name="" id="profilePicture"  onChange={handleImageChange}/>
-            <img src="" alt="" className='w-52 h-52 rounded-full bg-red-300 mx-auto' />
+          <form className=" max-w-xl space-y-5" onSubmit={handleSubmit}>
+            <input type="file" accept='image/*' id="profilePicture"  onChange={handleImageChange} ref={filePickerRef} hidden/>
+            <div className="relative" onClick={() => filePickerRef.current.click()} >
+            <img src={imageFileUrl || currentUser.profilePicture} alt="" className='w-52 h-52 rounded-full bg-red-300 mx-auto'/>
+            </div>
             {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -70,6 +105,7 @@ const ClientProfile = () => {
                 type="text"
                 name="fullName"
                 id="fullName"
+                onChange={handleChange}
                 defaultValue={currentUser.fullName}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
               />
@@ -128,7 +164,7 @@ const ClientProfile = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
               <input
                 type="text"
-                name="location"
+                id="location"
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
               />
@@ -177,7 +213,7 @@ const ClientProfile = () => {
                   type="url"
                   name="twitter"
                   placeholder="https://twitter.com/yourhandle"
-                  onChange={handleChange}
+                  onChange={handleSocialChange}
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500"
                 />
               </div>
@@ -187,7 +223,7 @@ const ClientProfile = () => {
                 <input
                   type="url"
                   name="linkedin"
-                  onChange={handleChange}
+                  onChange={handleSocialChange}
                   placeholder="https://linkedin.com/in/yourname"
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500"
                 />
@@ -198,7 +234,7 @@ const ClientProfile = () => {
                 <input
                   type="url"
                   name="portfolio"
-                  onChange={handleChange}
+                  onChange={handleSocialChange}
                   placeholder="https://yourportfolio.com"
                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500"
                 />
