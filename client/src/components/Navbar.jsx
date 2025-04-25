@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
     const [hoveredItem, setHoveredItem] = useState(null);
     const [hiddenMenu, setHiddenMenu] = useState(false)
+    const [isTop, setIsTop]= useState(true)
 
-    // const top =()=>{
-    //     scrollX
-    // }
+
+    useEffect(()=>{
+        const handleScroll =()=>{
+            setIsTop(window.scrollY === 0)
+        }
+        window.addEventListener("scroll", handleScroll)
+
+        return ()=> window.removeEventListener("scroll", handleScroll)
+    }, [])
     const navItems = [
         {
             name: "Features",
@@ -75,8 +82,8 @@ const Navbar = () => {
         }
     ]
     return (
-            <div className='bg-black z-50 fixed w-screen  '  onMouseLeave={() => setHoveredItem(null)} >
-                <nav className="navbar px-6 bg-black max-w-6xl text-white flex h-[10vh] 2xl:h-[8vh] w-[95vw] lg:w-[95vw]  xl:w-[95vw] 2xl:w-[80vw]  justify-between items-center mx-auto">
+            <div className={`${isTop ? "bg-black" : "bg-black/50 backdrop-blur-sm" } z-50 fixed w-screen  `}  onMouseLeave={() => setHoveredItem(null)} >
+                <nav className={`navbar px-6   max-w-6xl text-white flex h-[10vh] 2xl:h-[8vh] w-[95vw] lg:w-[95vw]  xl:w-[95vw] 2xl:w-[80vw]  justify-between items-center mx-auto`}>
                     <ul className="nav-links flex space-x-4 justify-center items-center ">
                         <h1 className="text-3xl mb-2 bg-red-50 font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">Quick~Gig</h1>
                         {navItems.map((item, index) => (

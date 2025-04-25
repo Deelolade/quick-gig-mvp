@@ -4,8 +4,8 @@ import axios from "axios"
 import { useDispatch, useSelector } from 'react-redux';
 import { updateFailure, updateStart, updateSuccess } from '../../redux/user/userSlice';
 import { toast } from "react-toastify";
-import { GiCancel } from "react-icons/gi";
 import "react-toastify/dist/ReactToastify.css";
+import { GiCancel } from "react-icons/gi";
 
 const ClientProfile = () => {
   const dispatch = useDispatch();

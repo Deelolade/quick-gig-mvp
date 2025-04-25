@@ -1,46 +1,75 @@
-import React,{useState} from 'react'
+import React, { useState, useEffect } from 'react'
+import FreelancerSideBar from '../freelancers/FreelancerSideBar'
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+
+const Proposals = () => {
+  const [proposals, setProposals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { currentUser } = useSelector(state => state.user)
 
 
-const Proposal = () => {
-  const [formData, setFormData] = useState({
-    proposalText: "",
-    budget: "",
-    duration: ""
-  });
+  // Replace this with actual current user ID from your auth state/store
+  const freelancerId = currentUser._id;
 
-  const handleChange =(e)=>{
+  useEffect(() => {
+    const fetchProposals = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5500/api/proposals/${freelancerId}`,
+          { withCredentials: true }
+        );
+        setProposals(res.data);
+      } catch (err) {
+        setError("Failed to load proposals");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  }
+    fetchProposals();
+  }, [freelancerId]);
+
+
   return (
-    <div>
-      <textarea
-        name="proposalText"
-        value={formData.proposalText}
-        onChange={handleChange}
-        placeholder="Write your proposal..."
-        className="w-full border p-3 rounded"
-      />
+    <div className='flex justify-between  bg-gray-100 h-[100vh]'>
+      <FreelancerSideBar />
+      <div className="dashboard w-[85%] bg-gray-100 h-[auto] ">
+        <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
+          <h1 className='text-2xl font-semibold'>Proposals</h1>
+          <div className="">
+            <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
+          </div>
+        </nav>
+        <div className="max-w-4xl mx-auto p-4 top-[10vh] relative">
+          <h1 className="text-2xl font-bold mb-4">Your Sent Proposals</h1>
+          {loading && <p>Loading your proposals...</p>}
+          {error && <p className="text-red-500">{error}</p>}
+          {proposals.length === 0 && <p>You haven't sent any proposals yet.</p>}
+          <ul className="space-y-4">
+            {proposals.map((proposal) => (
+              <li
+                key={proposal._id}
+                className="border rounded-md p-4 shadow hover:shadow-lg transition"
+              >
+                <h2 className="text-xl font-semibold mb-1">{proposal.gigId?.title || 'Untitled Gig'}</h2>
+                <p className="mb-2 text-gray-700">{proposal.proposalText}</p>
+                <div className="flex justify-between text-sm text-gray-500">
+                  <span>Budget: ${proposal.budget}</span>
+                  <span>Duration: {proposal.duration} days</span>
+                </div>
+                <div className="mt-2 text-xs text-gray-400">
+                  Sent on: {new Date(proposal.createdAt).toLocaleDateString()}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <input
-        name="budget"
-        type="number"
-        value={formData.budget}
-        onChange={handleChange}
-        placeholder="Proposed Budget"
-        className="w-full border p-2 rounded"
-      />
-
-      <input
-        name="duration"
-        type="text"
-        value={formData.duration}
-        onChange={handleChange}
-        placeholder="Expected Duration"
-        className="w-full border p-2 rounded"
-      />
-
+      </div>
     </div>
   )
 }
 
-export default Proposal
+export default Proposals
