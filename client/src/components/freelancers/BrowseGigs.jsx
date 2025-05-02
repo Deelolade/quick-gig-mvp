@@ -12,7 +12,6 @@ import "react-toastify/dist/ReactToastify.css";
 const BrowseGigs = () => {
   const [gigs, setGigs] = useState([])
   const [isOpen, setIsOpen] = useState(false);
-  const [proposal, setProposal] = useState("");
   const [selectedJob, setSelectedJob] = useState(null); // <-- store clicked job
   const [gigData, setGigData] = useState({})
   const {currentUser }= useSelector(state=> state.user)

@@ -299,7 +299,7 @@ const Home = () => {
                                     to="/"
                                     className=" py-3 px-6 items-center rounded-lg border border-gray-600 text-xl font-bold"
                                 >
-                                    See MarketPlace
+                                    See ChatRooms
                                     <SiMarketo className="inline ms-2" />
                                 </Link>
                             </div>

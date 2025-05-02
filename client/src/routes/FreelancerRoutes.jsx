@@ -5,7 +5,7 @@ import BrowseGigs from '../components/freelancers/BrowseGigs'
 import FreelancersDashboard from '../components/freelancers/FreelancersDashboard'
 import { useSelector } from 'react-redux'
 import Earning from '../components/freelancers/Earning'
-import Contracts from '../components/clients/Contracts'
+import Contracts from '../components/freelancers/Contracts'
 import Messages from '../components/freelancers/Messages'
 import Proposal from '../components/freelancers/Proposal'
 

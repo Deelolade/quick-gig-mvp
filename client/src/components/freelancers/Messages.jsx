@@ -3,7 +3,12 @@ import React from 'react'
 const Messages = () => {
   return (
     <div>
-      Messages
+      <aside className='w-[25vw] bg-red-500 h-screen'>
+        hello
+      </aside>
+      <section>
+
+      </section>
     </div>
   )
 }

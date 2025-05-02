@@ -44,9 +44,8 @@ const Proposals = () => {
         </nav>
         <div className="max-w-4xl mx-auto p-4 top-[10vh] relative">
           <h1 className="text-2xl font-bold mb-4">Your Sent Proposals</h1>
-          {loading && <p>Loading your proposals...</p>}
-          {error && <p className="text-red-500">{error}</p>}
-          {proposals.length === 0 && <p>You haven't sent any proposals yet.</p>}
+          {error  && <p className="text-red-500">{error}</p>}
+          {proposals.length === 0 ||loading && <p>You haven't sent any proposals yet.</p>}
           <ul className="space-y-4">
             {proposals.map((proposal) => (
               <li

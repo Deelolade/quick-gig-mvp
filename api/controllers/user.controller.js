@@ -35,3 +35,16 @@ export const getFreelancers = async (req, res, next) => {
             next(error)
         }
     }
+export const getFreelancer = async(req, res, next)=>{
+    const {userId}= req.params;
+    try {
+        const freelancerDetails = await User.findById(userId)
+        res.status(200).json({
+            success: true,
+            freelancer: freelancerDetails
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
