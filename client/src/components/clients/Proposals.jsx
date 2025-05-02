@@ -2,14 +2,19 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ClientSideBar from './ClientSideBar'
 import Modal from 'react-modal';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
+import { addUser } from '../../redux/chat/chatSlice'
 
 const Proposals = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { gigId } = useParams();
   const [proposals, setProposals] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedProposal, setSelectedProposal] = useState(null);
+
   useEffect(() => {
     const fetchProposals = async () => {
       setLoading(true)
@@ -35,6 +40,10 @@ const Proposals = () => {
     };
     fetchProposals();
   }, []);
+   const handleChatClick = (user) => {
+      dispatch(addUser(user))
+      navigate("/messages")
+    }
   return (
       <>
       {loading && (
@@ -123,12 +132,12 @@ const Proposals = () => {
               >
                 Close
               </button>
-              <Link
+              <button
+              onClick={()=>handleChatClick()}
                 className="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
-                to="/message"
               >
                 Send Message
-              </Link>
+              </button>
             </div>
           </div>
         )}
