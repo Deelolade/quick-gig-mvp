@@ -11,9 +11,14 @@ const FreelancersDashboard = () => {
           withCredentials: true,
         })
         setGigCount(res.data.count)
+        localStorage.getItem("total_gig_count", JSON.stringify(res.data.count))
         console.log(res.data)
       } catch (error) {
         console.error("Error fetching gig count:", error);
+        const cachedData = localStorage.setItem("total_gig_count")
+        if(cachedData){
+          setGigCount(JSON.parse(cachedData))
+        }
       }
     }
     fetchGigCount();
@@ -42,7 +47,7 @@ const FreelancersDashboard = () => {
             <div className="w-[30%] bg-white h-[30vh] rounded-md shadow-md">
               <div className="border-b-2 border-gray-400 py-4 px-4 flex justify-between items-center">
                 <h1 className='font-semibold text-xl'>Pending Proposals:</h1>
-                <h1 className='font-semibold text-xl'>0</h1>
+                <h1 className='font-semibold text-xl'>2</h1>
               </div>
 
             </div>

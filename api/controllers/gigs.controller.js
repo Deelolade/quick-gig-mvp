@@ -15,8 +15,6 @@ try {
 }    
 } 
 export const createGig = async (req, res, next) => {
-    console.log(req.body)
-    console.log("User making request:", req.user);
 
     try {
         const { title, description, price, category, deliveryTime } = req.body;

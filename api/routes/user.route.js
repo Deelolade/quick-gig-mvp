@@ -1,11 +1,15 @@
 import { Router } from "express";
-import { authenticateUser, isAdmin, isClient,  } from "../utils/authMiddleware.js";
-import { makeAdmin,getFreelancers } from "../controllers/user.controller.js";
+import { authenticateUser, isAdmin, isClient, isFreelancer,  } from "../utils/authMiddleware.js";
+import { makeAdmin,getFreelancers, getFreelancer } from "../controllers/user.controller.js";
 const userRouter = Router();
 
 
 //Make authenticated user admin
 userRouter.put("/make-admin/:userId", authenticateUser, isAdmin, makeAdmin);
+
+userRouter.get("/freelancer/:userId", authenticateUser,isFreelancer, getFreelancer)
+
+
 
 // get admin dashboard
 userRouter.get('/admin-dashboard',authenticateUser, isAdmin, (req, res) =>{

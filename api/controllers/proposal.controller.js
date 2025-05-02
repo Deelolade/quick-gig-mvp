@@ -1,3 +1,4 @@
+import Gigs from "../models/gig.model.js";
 import Proposal from "../models/proposal.model.js";
 
 export const sendProposal = async (req, res, next) => {
@@ -29,6 +30,21 @@ export const getProposalsByFreelancer = async (req, res, next) => {
         next(error);
     }
 };
+
+export const getClientProposals = async(req, res, next)=>{
+    try {
+        const gigs = await Gigs.find({clientId: req.params.clientId})
+        
+        const gigId = gigs.map(gig => gig._id)
+
+        const proposals = await Proposal.find( {gigId: {$in : gigId} })
+        .populate("freelancerId")
+        .sort({createdAt : -1})
+        res.status(200).json(proposals)
+    } catch (err) {
+        next(err)
+    }
+}
 
 export const getProposals = async (req, res, next) => {
     try {
