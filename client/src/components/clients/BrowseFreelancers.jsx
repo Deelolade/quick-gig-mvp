@@ -65,7 +65,7 @@ const BrowseFreelancers = () => {
           {
             freelancer.map((user, idx) => {
               return (
-                <div className="w-full md:w-[350px] bg-white shadow-md border border-gray-200 rounded-2xl p-4 transition transform hover:scale-105 hover:shadow-xl" key={idx}>
+                <div className="w-full md:w-[350px] bg-white my-4 shadow-md border border-gray-200 rounded-2xl p-4 transition transform hover:scale-105 hover:shadow-xl" key={idx}>
                   <img src={user.profilePicture} alt="profile" className="w-full h-48 object-cover rounded-xl" />
                   <div className="mt-4">
                     <h1 className="text-xl font-semibold">{user.fullName}</h1>
