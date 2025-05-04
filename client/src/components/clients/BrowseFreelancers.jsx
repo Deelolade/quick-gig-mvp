@@ -4,7 +4,8 @@ import axios from "axios"
 import Modal from "react-modal"
 import { Link, useNavigate } from 'react-router-dom'
 import { FaTelegramPlane } from "react-icons/fa";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import {io} from "socket.io-client"
 import { addUser } from '../../redux/chat/chatSlice'
 
 const BrowseFreelancers = () => {
@@ -13,7 +14,10 @@ const BrowseFreelancers = () => {
   const [freelancer, setFreelancer] = useState([])
   const [isOpen, setIsOpen] = useState(false)  
   const [loading, setLoading] = useState(false);
+  const { currentUser } = useSelector(state => state.user);
   const [selectedFreelancer, setSelectedFreelancer] = useState(null); // <-- store clicked job
+const socket = io('http://localhost:5500', {withCredentials:true})
+
   useEffect(() => {
     const getFreelancers = async () => {
       setLoading(true)
@@ -41,9 +45,13 @@ const BrowseFreelancers = () => {
   }, [])
   const handleChatClick = (user) => {
     dispatch(addUser(user))
-    navigate("/messages", {stae:{selectedUser : freelancer}})
+    navigate("/messages", {state:{selectedUser : user, senderUser: currentUser}})
+    socket.emit("initiate_chat", {
+      from: currentUser._id,
+      to:user._id
+    })
+    console.log(user._id)
   }
-
   return (
     <div className='flex justify-between  bg-gray-100 h-[100vh]'>
        {loading && (

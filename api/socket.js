@@ -4,11 +4,11 @@ import { getUserFromDB } from "./utils/getUsers.js";
 
 export const socketHandler = (io) => {
     io.on('connection', (socket) => {
-        console.log('Client connected:', socket.id);
+        // console.log('Client connected:', socket.id);
 
-        socket.on("join_room", ({ userId, room }) => {
+        socket.on("join_room", (room ) => {
             socket.join(room)
-            console.log(`user with ${userId} join ${room}`)
+            console.log(`user with ${room} join ${room}`)
         })
 
         // Handle sending a message (saves it in DB & broadcasts it)
@@ -29,6 +29,16 @@ export const socketHandler = (io) => {
 
         socket.on("disconnect", () => {
             console.log('Client disconnected:', socket.id);
+        })
+        socket.on("initiate_chat", async ({ from, to }) => {
+            const senderUser = await getUserFromDB(from)
+            io.to(to).emit("chat_requested", {
+                from: {
+                    _id: senderUser._id,
+                    userName: senderUser.userName,
+                    profilePicture: senderUser.profilePicture,
+                }
+            })
         })
     })
 }

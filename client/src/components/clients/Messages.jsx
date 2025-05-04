@@ -4,7 +4,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { FaSearch, FaChevronLeft } from "react-icons/fa";
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import {io} from "socket.io-client"
 import { IoSendSharp } from "react-icons/io5";
+import { addUser } from '../../redux/chat/chatSlice'
+
 
 const Messages = () => {
   const location = useLocation()
@@ -15,11 +18,22 @@ const Messages = () => {
   const [searchedValue, setSearchedValue] = useState([])
   const [hoveredList, setHoveredList] = useState(null)
   const [messages, setMessages] = useState([])
-  
+  const [messageData, setMessageData] = useState({
+    content: "",
+    senderId:"",
+    receiverId:""
+  })
+  const socket = io('http://localhost:5500', {withCredentials:true})
   const [filteredUsers, setFilteredUsers] = useState(selectedUsers);
   const handleChange = (e) => {
     setSearchedValue(e.target.value);
   };
+  const data = {
+    receiverId: selectedUser._id,
+    senderId: currentUser._id,
+    content:messageData.content
+  }
+  console.log(data)
   const handleClickedUser = (user) => {
     dispatch(setSelectedUser({
       userName: user.userName,
@@ -29,6 +43,7 @@ const Messages = () => {
     }));
     setHoveredList(user._id)
   };
+  
   // sets freelancer from the browse freelancers page
   useEffect(() => {
     if (location.state?.selectedUser) {
@@ -65,6 +80,50 @@ const Messages = () => {
     fetchMessages(); 
     }
   },[currentUser, selectedUser])
+
+  // Listen for incoming messages from the socket
+  useEffect(()=>{
+socket.on("", (message)=>{
+  setMessages(prevMessages =>[...prevMessages, message])
+})
+  },[])
+  const sendMessage = async()=>{
+    const {content }= messageData;
+    const data = {
+      senderId:currentUser._id,
+      receiverId:selectedUser._id,
+      content,
+      room: selectedUser._id
+    }
+    socket.emit("send_message",data)
+    console.log(data.room)
+    setMessageData({content:""})
+  }
+   // Listen for the acknowledgment (message sent confirmation)
+   useEffect(() => {
+    socket.on('message_sent', (data) => {
+      if (data.status === 'success') {
+        setFeedback('Message sent successfully!');
+      } else {
+        setFeedback('Failed to send message.');
+      }
+    });
+
+    return () => {
+      socket.off('message_sent'); // Clean up when component unmounts
+    };
+  }, []);
+
+  // Listen for incoming messages
+  useEffect(() => {
+    socket.on('receive_message', (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    return () => {
+      socket.off('receive_message'); // Clean up when component unmounts
+    };
+  }, []);
   return (
     <div className='flex '>
       <aside className=' w-[15vw] h-screen overflow-y-auto bg-green-500  px-2 text-white  py-4 flex flex-col justify-between shadow-md'>
@@ -108,19 +167,22 @@ const Messages = () => {
         {selectedUser ? (
           <div className="flex flex-col h-[92vh] py-5 max-w-4xl justify-center items-center w-[100%] mx-auto relative top-[8vh]">
             <div className='max-w-4xl  h-[84vh]  w-[100%] overflow-y-auto overflow-x -hidden flex flex-col  px-2 py-4 space-x-4   '>
-             {messages.map((message, idx) => (
-        <div key={idx} className={`flex ${message.senderId === currentUser ? 'justify-end' : 'items-start'} my-2`}>
+            {messages.map((message, idx) => (
+        <div key={idx} className={`flex ${message.senderId === currentUser._id ? 'justify-end' : 'items-start'} my-2`}>
           <div
-            className={`px-4 py-3 rounded-2xl max-w-[75%] break-words ${message.senderId === currentUser ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-900'}`}
+            className={`px-4 py-3 rounded-2xl max-w-[75%] break-words ${message.senderId === currentUser._id ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-900'}`}
           >
             <p>{message.content}</p>
+            <p className='text-right text-gray-300 text-sm'>{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
           </div>
         </div>
       ))}
             </div>
             <div className="h-[8vh] rounded-lg bg-green-500 w-[100%] px-5 flex justify-between items-center">
-              <textarea type="text" placeholder='Type a Message...' rows={1} className='py-3 px-3 w-[90%] outline-none bg-green-500 text-white placeholder-white break-words overflow-auto ' ></textarea>
-              <IoSendSharp className='text-2xl text-white' />
+              <textarea type="text"  id="content" name='content'onChange={(e)=>setMessageData({...messageData, content:e.target.value})} value={messageData.content} placeholder='Type a Message...' rows={1} className='py-3 px-3 w-[90%] outline-none bg-green-500 text-white placeholder-white break-words overflow-auto ' ></textarea>
+              <div className="p-3 hover:bg-green-400 rounded-lg">
+              <IoSendSharp className='text-2xl text-white' onClick={sendMessage} />
+              </div>
             </div>
           </div>
         ) : <p>no users slected yet</p>}
