@@ -41,7 +41,7 @@ const BrowseFreelancers = () => {
   }, [])
   const handleChatClick = (user) => {
     dispatch(addUser(user))
-    navigate("/messages")
+    navigate("/messages", {stae:{selectedUser : freelancer}})
   }
 
   return (

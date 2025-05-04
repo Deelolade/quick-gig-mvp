@@ -32,7 +32,8 @@ export const getMessages = async (req, res, next) => {
             ]
         })
             .sort({ createdAt: 1 }).limit(20)
-        res.status(201).json(messages)
+        res.status(201).json({success: true,
+            messages:messages})
     } catch (error) {
         next(error)
     }

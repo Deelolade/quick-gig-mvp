@@ -44,7 +44,7 @@ app.use("/api/auth", authRouter)
 app.use("/api/users", userRouter)
 app.use("/api", gigRouter)
 app.use("/api", proposalRouter)
-app.use("/", messageRouter)
+app.use("/api", messageRouter)
 
 // listening port
 server.listen(port, () => {
