@@ -3,9 +3,11 @@ import { setSelectedUser } from "../../redux/chat/chatSlice"
 import { useSelector, useDispatch } from 'react-redux'
 import { FaSearch,FaChevronLeft  } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import {io} from "socket.io-client"
 
 const Messages = () => {
   const dispatch = useDispatch()
+  const socket = io(" http://localhost:5500", { withCredentials: true})
   const {  selectedUsers } = useSelector(state => state.chat);
   const {selectedUser}  = useSelector(state => state.chat);
   const [searchedValue, setSearchedValue] =useState('')
