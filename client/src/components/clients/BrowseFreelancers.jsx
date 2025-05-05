@@ -4,8 +4,9 @@ import axios from "axios"
 import Modal from "react-modal"
 import { Link, useNavigate } from 'react-router-dom'
 import { FaTelegramPlane } from "react-icons/fa";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from '../../redux/chat/chatSlice'
+import {io} from "socket.io-client"
 
 const BrowseFreelancers = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,10 @@ const BrowseFreelancers = () => {
   const [freelancer, setFreelancer] = useState([])
   const [isOpen, setIsOpen] = useState(false)  
   const [loading, setLoading] = useState(false);
+  const [sentInvites, setSentInvites] = useState({});
+  const { currentUser } = useSelector(state => state.user);
   const [selectedFreelancer, setSelectedFreelancer] = useState(null); // <-- store clicked job
+  const socket = io('http://localhost:5500', {withCredentials:true})
   useEffect(() => {
     const getFreelancers = async () => {
       setLoading(true)
@@ -41,12 +45,21 @@ const BrowseFreelancers = () => {
   }, [])
   const handleChatClick = (user) => {
     dispatch(addUser(user))
-    navigate("/messages")
+    socket.emit("chat_request", {
+      from:currentUser,
+      to: user._id
+    })
+    console.log("Client initiated chat with:", user._id);
+    setSentInvites((prev) => ({...prev , [user._id]:true}))
   }
-
+  useEffect(() => {
+    if (socket && currentUser?._id) {
+      socket.emit("register_user", currentUser._id);
+    }
+  }, [socket, currentUser]);
   return (
     <div className='flex justify-between  bg-gray-100 h-[100vh]'>
-       {loading && (
+      {loading && (
         <div className="fixed  inset-0 flex justify-center items-center bg-black/20 z-[9999] ">
           <div className="bg-white p-4 rounded-lg shadow-lg">
             <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
@@ -94,14 +107,9 @@ const BrowseFreelancers = () => {
                     </button>
                   </div>
                 </div>
-
-
-
               )
             })
           }
-
-
         </section>
       </div>
       <Modal
@@ -174,7 +182,7 @@ const BrowseFreelancers = () => {
                   Invite to Job
                 </button>
                 <button onClick={() => handleChatClick(selectedFreelancer)} className=" flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full text-sm w-full">
-                  Send Message <FaTelegramPlane className='mx-2' />
+                  {!sentInvites[selectedFreelancer._id]  ? "Send Message " :"Sent"}<FaTelegramPlane className='mx-2' />
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
