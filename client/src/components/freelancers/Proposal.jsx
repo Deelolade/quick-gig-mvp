@@ -17,7 +17,7 @@ const Proposals = () => {
     const fetchProposals = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5500/api/proposals/${freelancerId}`,
+          `http://localhost:5500/api/proposals/${currentUser._id}`,
           { withCredentials: true }
         );
         setProposals(res.data);
@@ -33,9 +33,9 @@ const Proposals = () => {
 
 
   return (
-    <div className='flex justify-between  bg-gray-100 h-[100vh]'>
+    <div className='flex justify-between  bg-gray-100 min-h-screen'>
       <FreelancerSideBar />
-      <div className="dashboard w-[85%] bg-gray-100 h-[auto] ">
+      <div className="dashboard w-[85%] ">
         <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
           <h1 className='text-2xl font-semibold'>Proposals</h1>
           <div className="">
@@ -43,7 +43,7 @@ const Proposals = () => {
           </div>
         </nav>
         <div className="max-w-4xl mx-auto p-4 top-[10vh] relative">
-          <h1 className="text-2xl font-bold mb-4">Your Sent Proposals</h1>
+          <h1 className="text-3xl font-semibold mb-4">Your Sent Proposals</h1>
           {error  && <p className="text-red-500">{error}</p>}
           {proposals.length === 0 ||loading && <p>You haven't sent any proposals yet.</p>}
           <ul className="space-y-4">

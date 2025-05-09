@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
 
-
 const chatSchema = new mongoose.Schema({
     participants: {
         required: true,

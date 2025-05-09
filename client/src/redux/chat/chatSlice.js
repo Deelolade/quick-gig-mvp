@@ -11,7 +11,7 @@ const chatSlice = createSlice({
         addUser:(state, action)=>{
             if (!state.selectedUsers) {
                 state.selectedUsers = [];
-              }
+            }
             state.selectedUsers = state.selectedUsers.filter(Boolean)
             const userExists = state.selectedUsers.some(user =>user && user._id === action.payload._id)
             if( !userExists){

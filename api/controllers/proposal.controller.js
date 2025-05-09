@@ -4,6 +4,9 @@ import Proposal from "../models/proposal.model.js";
 export const sendProposal = async (req, res, next) => {
     try {
         const { proposalText, budget, duration, gigId, freelancerId } = req.body;
+        if( !proposalText || !budget || !duration || !gigId || !freelancerId || proposalText ==="" || budget ==="" || duration==="" || gigId ==="" || freelancerId === ""){
+            return res.status(400).json({ message: "All fields are required." })
+        }
 
         const existing = await Proposal.findOne({ gigId, freelancerId });
         if (existing) {
@@ -33,11 +36,11 @@ export const getProposalsByFreelancer = async (req, res, next) => {
 
 export const getClientProposals = async(req, res, next)=>{
     try {
-        const gigs = await Gigs.find({clientId: req.params.clientId})
+        const gigs = await Gigs.find({client: req.params.userId})
         
-        const gigId = gigs.map(gig => gig._id)
+        const gigIds = gigs.map(gig => gig._id)
 
-        const proposals = await Proposal.find( {gigId: {$in : gigId} })
+        const proposals = await Proposal.find({gigId: {$in : gigIds} })
         .populate("freelancerId")
         .sort({createdAt : -1})
         res.status(200).json(proposals)
