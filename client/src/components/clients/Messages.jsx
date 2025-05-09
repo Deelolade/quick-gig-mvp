@@ -23,6 +23,8 @@ const Messages = () => {
       senderId:"",
       receiverId:""
     })
+      const messagesEndRef = useRef(null);
+    
   useEffect(() => {
     if (!socket.current) {
       socket.current = io("http://localhost:5500", { withCredentials: true });
@@ -102,6 +104,9 @@ useEffect(() => {
       fetchMessages(); 
       }
     },[currentUser, selectedUser])
+    useEffect(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
   return (
     <div className='flex '>
       <aside className='w-[15vw] h-screen overflow-y-auto bg-green-500  px-2 text-white  py-4 flex flex-col justify-between shadow-md'>
@@ -132,7 +137,6 @@ useEffect(() => {
             <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
           </div>
         </nav>
-        {/* <h1>{selectedUser.userName}</h1> */}
         {selectedUser ? (
           <div className="flex flex-col h-[92vh] py-5 max-w-4xl justify-center items-center w-[100%] mx-auto relative top-[8vh]">
             <div className='max-w-4xl  h-[84vh]  w-[100%] overflow-y-auto overflow-x -hidden flex flex-col  px-2 py-4 space-x-4   '>
@@ -144,6 +148,7 @@ useEffect(() => {
                     <p>{message.content}</p>
                     <p className='text-right text-gray-300 text-sm'>{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                   </div>
+                  <div ref={messagesEndRef} />
                 </div>
               ))}
             </div>

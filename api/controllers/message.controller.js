@@ -63,8 +63,8 @@ export const getUserChats = async (req, res, next) => {
             return res.status(400).json({ message: "userId required" });
         }
         const chats = await Chat.find({ participants: userId })
-            .populate("participants", "username avatar") // shows names & avatars
-            .sort({ updatedAt: -1 }); // newest chats appear first
+            .populate("participants", "username avatar")  
+            .sort({ updatedAt: -1 });  
 
         res.status(200).json(chats);
     } catch (error) {

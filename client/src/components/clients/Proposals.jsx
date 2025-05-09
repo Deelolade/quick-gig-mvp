@@ -5,6 +5,8 @@ import Modal from 'react-modal';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from '../../redux/chat/chatSlice'
+import {io} from "socket.io-client"
+
 
 const Proposals = () => {
   const dispatch = useDispatch();
@@ -14,7 +16,10 @@ const Proposals = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedProposal, setSelectedProposal] = useState(null);
+  const [sentInvites, setSentInvites] = useState({});
   const { currentUser } = useSelector(state => state.user)
+  const socket = io('http://localhost:5500', {withCredentials:true})
+
 
   useEffect(() => {
     const fetchProposals = async () => {
@@ -45,9 +50,14 @@ const Proposals = () => {
     fetchProposals();
   }, []);
   const handleChatClick = (user) => {
-    dispatch(addUser(user))
-    navigate("/messages")
-  }
+      dispatch(addUser(user))
+      socket.emit("chat_request", {
+        from:currentUser,
+        to: user._id
+      })
+      console.log("Client initiated chat with:", user._id);
+      setSentInvites((prev) => ({...prev , [user._id]:true}))
+    }
   return (
     <>
       {loading && (
@@ -150,7 +160,7 @@ const Proposals = () => {
                   Close
                 </button>
                 <button
-                  onClick={() => handleChatClick()}
+                  onClick={() => handleChatClick(selectedProposal.freelancerId)}
                   className="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
                 >
                   Send Message
