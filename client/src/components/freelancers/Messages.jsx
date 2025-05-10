@@ -30,31 +30,6 @@ const Messages = () => {
   const handleChange = (e) => {
     setSearchedValue(e.target.value);
   };
-  // useEffect(() => {
-  //   const sendMessage = async () => {
-  //   const { content } = messageData;
-  //     try {
-  //       const data = {
-  //         senderId: currentUser._id,
-  //         receiverId: selectedUser._id,
-  //         content,
-  //         room: selectedUser._id,
-  //         createdAt: new Date().toISOString(),
-  //       };
-
-  //       const res = await axios.post("http://localhost:5500/messages", data, {
-  //         withCredentials: true,
-  //       });
-
-  //       console.log("this is the new", res.data);
-  //     } catch (error) {
-  //       console.error("Failed to send message:", error);
-  //     }
-  //   };
-
-  //   sendMessage();
-  // }, []);
-
   // /chats/:userId
   //FETCH PREVIOUS MESSAGES 
   useEffect(() => {

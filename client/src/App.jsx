@@ -11,6 +11,7 @@ import FreelancerSignUp from "./pages/FreelancerSignUp"
 import { useSelector } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
+import ChatRoom from './pages/ChatRoom'
 
 const client = new QueryClient({
   defaultOptions: {
@@ -27,6 +28,7 @@ const App = () => {
         <Route path='/' element={<Home/>}/>
         <Route path="/signin" element={<SignIn/>}/>
         <Route path="/role" element={<RoleSelection/>}/>
+        <Route path="/chatroom" element={<ChatRoom />} />
         <Route path="/signup/client" element={<ClientSignUp/>}/>
         <Route path="/signup/freelancer" element={<FreelancerSignUp/>}/>
 

@@ -81,7 +81,7 @@ useEffect(() => {
     }
     searchFilter()
   }, [searchedValue, selectedUsers])
-   useEffect(()=>{
+  useEffect(()=>{
       const fetchMessages = async()=>{
         try {
           const res =await  axios.get("http://localhost:5500/messages",{
@@ -153,9 +153,9 @@ useEffect(() => {
               ))}
             </div>
             <div className="h-[8vh] rounded-lg bg-green-500 w-[100%] px-5 flex justify-between items-center">
-              <textarea type="text" id="content" name='content' onChange={(e) => setMessageData({ ...messageData, content: e.target.value })} value={messageData.content} placeholder='Type a Message...' rows={1} className='py-3 px-3 w-[90%] outline-none bg-green-500 text-white placeholder-white break-words overflow-auto ' ></textarea>
+              <textarea type="text" id="content" name='content'onKeyDown={(e) => { e.key === "Enter" && sendMessage() }}  onChange={(e) => setMessageData({ ...messageData, content: e.target.value })} value={messageData.content} placeholder='Type a Message...' rows={1} className='py-3 px-3 w-[90%] outline-none bg-green-500 text-white placeholder-white break-words overflow-auto ' ></textarea>
               <div className="p-3 hover:bg-green-400 rounded-lg">
-                <IoSendSharp className='text-2xl text-white' onClick={sendMessage} onKeyDown={(e) => { e.key === "Enter" && sendMessage() }} />
+                <IoSendSharp className='text-2xl text-white' onClick={sendMessage} />
               </div>
             </div>
           </div>

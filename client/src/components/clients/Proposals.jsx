@@ -51,6 +51,7 @@ const Proposals = () => {
   }, []);
   const handleChatClick = (user) => {
       dispatch(addUser(user))
+      navigate("/messages")
       socket.emit("chat_request", {
         from:currentUser,
         to: user._id
