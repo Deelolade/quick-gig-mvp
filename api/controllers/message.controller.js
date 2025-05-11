@@ -1,5 +1,6 @@
 import Chat from "../models/chat.model.js";
 import Messages from "../models/message.model.js"
+import GroupChat from "../models/chatroom.model.js";
 
 
 export const sendMessage = async (req, res, next) => {
@@ -63,11 +64,23 @@ export const getUserChats = async (req, res, next) => {
             return res.status(400).json({ message: "userId required" });
         }
         const chats = await Chat.find({ participants: userId })
-            .populate("participants", "username avatar")  
-            .sort({ updatedAt: -1 });  
+            .populate("participants", "username avatar")
+            .sort({ updatedAt: -1 });
 
         res.status(200).json(chats);
     } catch (error) {
         next(error);
     }
 };
+
+export const getChatRoomMessages = async(req, res, next) => {
+    try {
+        const newMessage = await GroupChat.find().populate("senderId",  "userName profilePicture");
+        res.status(200).json({
+            message:newMessage
+        })
+
+    } catch(error) {
+        next(error)
+    }
+}

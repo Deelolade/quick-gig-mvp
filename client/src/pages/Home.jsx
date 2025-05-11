@@ -264,15 +264,15 @@ const Home = () => {
                     <div className="flex flex-col">
                     <motion.div
                         ref={refOne}
-                        initial={{ opacity: 0, y: 0 }}
-                        animate={inviewOne ?  { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
+                        initial={{ opacity: 1, y: 20 }}
+                        animate={inviewOne ?  { opacity: 1, y: 0 } : { opacity: 1, y: 50 }}
                         transition={{ duration: 0.6, ease: "easeInOut" }}
                         className=" text-white relative  z-10 mx-auto  text-left-center flex flex-col  justify-center items-center">
                         <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8">
                             <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
                             <span>QuickGig — Freelance. Fast. Together.</span>
                         </div>
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight text-center">
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight text-center">
                             Hire fast.{" "}
                             <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600">
                                 Connect deeply.
@@ -307,7 +307,7 @@ const Home = () => {
                                 <div className="px-4 py-2 bg-purple-900/30 backdrop-blur-sm border flex items-center space-x-2 border-purple-800 rounded-full">
                                     {" "}
                                     <FaSignsPost className="text-pink-500 font-bold text-xl" />
-                                    <span className="font-semibold text-gray-300">
+                                    <span className="font-semibold text-gray-300 ">
                                         Post a Gig
                                     </span>{" "}
                                 </div>
