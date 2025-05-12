@@ -39,6 +39,7 @@ export const createGig = async (req, res, next) => {
         next(error)
     }
 }
+// client
 export const getGigCount = async (req, res, next)=>{
     try {
         const client = req.user.id;
