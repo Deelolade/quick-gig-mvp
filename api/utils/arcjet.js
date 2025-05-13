@@ -37,6 +37,6 @@ export const arcjetMiddleware = async(req, res, next)=>{
         }
     } catch (err) {
         console.log(`arcjet error : ${err}`)
-        next(err)
+        return next(err)
     }
 }

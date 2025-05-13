@@ -6,19 +6,19 @@ const userSocketMap = {}; // { userId: socketId }
 
 export const socketHandler = (io) => {
     io.on("connection", (socket) => {
-        console.log("Client connected:", socket.id);
+        // console.log("Client connected:", socket.id);
 
         // Register the user and join general room
         socket.on("register_user", (userId) => {
             userSocketMap[userId] = socket.id;
             socket.join("general");
-            console.log(`User ${userId} registered and joined 'general' room with socket ${socket.id}`);
+            // console.log(`User ${userId} registered and joined 'general' room with socket ${socket.id}`);
         });
 
         // Join specific room
         socket.on("join_room", ({ userId, room }) => {
             socket.join(room);
-            console.log(`User ${userId} joined room ${room}`);
+            // console.log(`User ${userId} joined room ${room}`);
         });
 
         // Send direct message to specific room
@@ -41,9 +41,10 @@ export const socketHandler = (io) => {
             if (targetSocketId) {
                 io.to(targetSocketId).emit("incoming_chat_request", from);
                 console.log(`Chat request sent from ${from._id || from} to ${to}`);
-            } else {
-                console.log(`User (${to}) is not connected`);
-            }
+            } 
+            // else {
+            //     console.log(`User (${to}) is not connected`);
+            // }
         });
 
         // ✅ General chat message handler
@@ -62,7 +63,7 @@ export const socketHandler = (io) => {
 
         // Disconnect handler
         socket.on("disconnect", () => {
-            console.log("Client disconnected:", socket.id);
+            // console.log("Client disconnected:", socket.id);
             for (const [userId, socketId] of Object.entries(userSocketMap)) {
                 if (socketId === socket.id) {
                     delete userSocketMap[userId];

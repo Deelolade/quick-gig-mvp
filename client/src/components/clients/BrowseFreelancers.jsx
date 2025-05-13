@@ -7,6 +7,7 @@ import { FaTelegramPlane } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from '../../redux/chat/chatSlice'
 import {io} from "socket.io-client"
+import BottomMenu from './BottomMenu'
 
 const BrowseFreelancers = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const BrowseFreelancers = () => {
     }
   }, [socket, currentUser]);
   return (
+    <>
     <div className='flex justify-between  bg-gray-100 h-[100vh]'>
       {loading && (
         <div className="fixed  inset-0 flex justify-center items-center bg-black/20 z-[9999] ">
@@ -67,14 +69,14 @@ const BrowseFreelancers = () => {
         </div>
       )}
       <ClientSideBar />
-      <div className="dashboard w-[85%] bg-gray-100 h-[auto] ">
-        <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
-          <h1 className='text-2xl font-semibold'>Browse Freelancers </h1>
+      <div className="dashboard w-full lg:w-[85%] bg-gray-100 h-[auto] ">
+        <nav className='h-[8vh] w-full lg:w-[85vw]  py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
+          <h1 className='md:text-2xl font-semibold'>Browse Freelancers </h1>
           <div className="">
             <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
           </div>
         </nav>
-        <section className='top-[8vh] relative p-8  bg-gray-100 grid grid-cols-4 mx-auto  '>
+        <section className='top-[8vh] relative p-8  bg-gray-100 grid-cols-1 md:grid-cols-2 grid lg:grid-cols-4 mx-auto  '>
           {
             freelancer.map((user, idx) => {
               return (
@@ -116,7 +118,7 @@ const BrowseFreelancers = () => {
         isOpen={isOpen}
         contentLabel="Freelancer Details"
         onRequestClose={() => setIsOpen(false)}
-        className="bg-white w-[38vw] h-auto  mx-auto mt-24 p-8 rounded-xl shadow-xl outline-none"
+        className="bg-white   w-[90vw] md:w-[80vw] lg:w-[38vw] h-auto   overflow-auto mx-auto mt-18 absolute z-50 md:mt-18 lg:mt-24 p-8 rounded-xl shadow-xl outline-none"
         overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
       >
         {
@@ -132,7 +134,7 @@ const BrowseFreelancers = () => {
                 <h2 className="text-2xl font-bold">{selectedFreelancer.fullName}</h2>
                 <p className="text-gray-500 text-sm mt-1">{selectedFreelancer.topSkill || 'Freelancer'}</p>
                 {/* Verified Badge */}
-                <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center gap-2 md:mt-2">
                   <span className="text-green-500 text-lg font-semibold">Verified</span>
                   <div className="relative flex justify-center items-center">
                     <div className="w-2 h-2 bg-green-500 rounded-full z-30" />
@@ -142,16 +144,16 @@ const BrowseFreelancers = () => {
               </div>
 
               {/* Bio */}
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold mb-2">About Me</h3>
+              <div className="md:mt-6">
+                <h3 className="text-lg font-semibold md:mb-2">About Me</h3>
                 <p className="text-gray-700 text-sm leading-relaxed">
                   {selectedFreelancer.bio || 'No bio provided yet.'}
                 </p>
               </div>
 
               {/* Skills */}
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold mb-2">Skills</h3>
+              <div className=" mt-2 md:mt-6">
+                <h3 className="text-lg font-semibold md:mb-2">Skills</h3>
                 <div className="flex flex-wrap gap-2">
                   {selectedFreelancer.skills?.length ? (
                     selectedFreelancer.skills.map((skill, idx) => (
@@ -169,15 +171,15 @@ const BrowseFreelancers = () => {
               </div>
 
               {/* Details Section */}
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <div className="bg-gray-100 p-4 rounded-xl text-center">
+              <div className=" mt-3 md:mt-6 grid grid-cols-2 gap-4">
+                <div className="bg-gray-100 p-2 md:p-4 rounded-xl text-center">
                   <p className="text-xs text-gray-500">Location</p>
                   <p className="text-sm font-medium">{selectedFreelancer.location || 'Unknown'}</p>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex justify-between gap-4 mt-8">
+              <div className="flex justify-between gap-4 mt-4 md:mt-8">
                 <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm w-full">
                   Invite to Job
                 </button>
@@ -196,6 +198,8 @@ const BrowseFreelancers = () => {
         }
       </Modal>
     </div>
+    <BottomMenu/>
+    </>
   )
 }
 
