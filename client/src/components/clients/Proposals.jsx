@@ -6,6 +6,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from '../../redux/chat/chatSlice'
 import {io} from "socket.io-client"
+import BottomMenu from './BottomMenu';
 
 
 const Proposals = () => {
@@ -26,7 +27,6 @@ const Proposals = () => {
       setLoading(true)
       try {
         console.log(currentUser)
-        console.log(gigId)
         const res = await axios.get(`http://localhost:5500/api/proposals/client/${currentUser._id}`, {
           withCredentials: true,
         });
@@ -68,35 +68,35 @@ const Proposals = () => {
           </div>
         </div>
       )}
-      <div className='flex justify-between  bg-gray-100 h-[100vh]'>
+      <div className='flex justify-between  bg-gray-100 h-[100vh] pb-20'>
         <ClientSideBar />
-        <div className="dashboard w-[85%] bg-gray-100 h-[auto] ">
-          <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
-            <h1 className='text-2xl font-semibold'>Proposals</h1>
+        <div className="dashboard w-full lg:w-[85%] bg-gray-100 h-[auto] ">
+          <nav className='h-[8vh] w-full lg:w-[85vw]  py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
+            <h1 className='md:text-2xl font-semibold'>Proposals</h1>
             <div className="">
               <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
             </div>
           </nav>
-          <section className='top-[8vh] relative p-8  bg-gray-100  mx-auto'>
-            <div className="flex-1 p-8">
-              {proposals.length > 0 && proposals ?
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <section className='top-[8vh] relative p-4  lg:p-8  lg:py-4   bg-gray-100  mx-auto'>
+            <div className="flex-1 p-2 pb-8 lg:p-8">
+              {proposals.length > 0 && proposals ? 
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:mt-8 mb-8 md:mb-12 lg:mb-8">
                   {proposals.map((proposal) => (
                     <div
                       key={proposal._id}
                       className="border p-6 bg-white rounded-xl shadow hover:shadow-lg transition"
                     >
-                      <div className="flex items-center gap-4 mb-4">
+                      <div className="flex items-center gap-4 mb-4 ">
                         <img
                           src={proposal.freelancerId?.profilePicture || 'https://via.placeholder.com/150'}
                           alt="Profile"
                           className="w-12 h-12 rounded-full object-cover"
                         />
-                        <div>
+                        <div className="min-w-0">
                           <h2 className="text-lg font-semibold">
                             {proposal.freelancerId?.fullName || 'Unknown Freelancer'}
                           </h2>
-                          <p className="text-gray-500 text-sm">{proposal.freelancerId?.email}</p>
+                          <p className="text-gray-500 text-sm truncate">{proposal.freelancerId?.email}</p>
                         </div>
                       </div>
 
@@ -141,11 +141,11 @@ const Proposals = () => {
           isOpen={isOpen}
           onRequestClose={() => setIsOpen(false)}
           contentLabel="Proposal Details"
-          className="bg-white w-[40vw] p-8 rounded-xl shadow-xl outline-none"
+          className="bg-white w-[90vw] md:w-[80vw] lg:w-[40vw] p-8 rounded-xl shadow-xl outline-none"
           overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
         >
-          {selectedProposal && (
-            <div>
+          {selectedProposal && (  
+            <div className=''>
               <h2 className="text-2xl font-bold mb-4">Proposal Details</h2>
               <p className="mb-2"><strong>Freelancer:</strong> {selectedProposal.freelancerId?.fullName}</p>
               <p className="mb-2"><strong>Email:</strong> {selectedProposal.freelancerId?.email}</p>
@@ -171,6 +171,7 @@ const Proposals = () => {
           )}
         </Modal>
       </div>
+      <BottomMenu/>
     </>
   )
 }

@@ -89,9 +89,9 @@ const ClientProfile = () => {
   }
   return (
     <>
-    <div className='flex justify-between  bg-gray-100 min-h-screen'>
+    <div className='flex justify-between h-full  bg-gray-100 min-h-screen'>
       <ClientSideBar />
-      <div className="dashboard w-full lg:w-[85%]  min-h-screen bg-gray-100 ">
+      <div className="dashboard w-full lg:w-[85%] md:pb-32">
         <nav className='h-[8vh] w-full lg:w-[85%]   py-4  px-5  md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
           <h1 className='text-2xl font-semibold'>Profile</h1>
           <div className="">

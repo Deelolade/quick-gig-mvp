@@ -5,6 +5,10 @@ import ClientSideBar from '../components/clients/ClientSideBar'
 import { useSelector } from 'react-redux'
 import FreelancerSideBar from '../components/freelancers/FreelancerSideBar'
 import { IoSendSharp } from "react-icons/io5";
+import BottomMenu from '../components/clients/BottomMenu'
+import { FaArrowLeft } from "react-icons/fa6";
+import { Link } from 'react-router-dom'
+
 
 
 
@@ -74,18 +78,24 @@ const ChatRoom = () => {
     };
 
     return (
+        <>
         <div className='flex justify-between   '>
             {
                 currentUser.role === "client" ? <ClientSideBar /> : <FreelancerSideBar />
             }
-            <div className="dashboard w-[85%] bg-gray-100 h-[auto]  ">
-                <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
+            <div className="dashboard lg:w-[85%] bg-gray-100 h-[auto] md:pb-20 ">
+                <nav className='h-[8vh] lg:w-[85vw] w-full py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
+                    <div className=" flex  items-center space-x-4">
+                    <Link to='/dashboard' className='p-3 hover:bg-green-300 hover:text-white rounded-lg lg:hidden'>
+                    <FaArrowLeft/>
+                    </Link>
                     <h1 className='text-xl font-semibold'>Chat Rooms</h1>
+                    </div>
                     <div className="">
                         <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Client</button>
                     </div>
                 </nav>
-                <div className="flex flex-col  h-[92vh] py-5 bg-gray-100 max-w-4xl justify-center items-center w-[100%] mx-auto relative top-[8vh]">
+                <div className="flex flex-col  h-[92vh] py-5 bg-gray-100 max-w-4xl justify-center items-center  w-[90%] lg:w-[100%] mx-auto relative top-[8vh]">
                     <div className='max-w-4xl h-[84vh] w-full overflow-y-auto overflow-x-hidden flex flex-col px-2 py-4 space-y-4'>
                     
                         {messages.map((message, idx) => (
@@ -109,7 +119,7 @@ const ChatRoom = () => {
                             </div>
                         ))}
                     </div>
-                    <div className="h-[8vh] rounded-lg bg-green-500 w-[100%] px-5 flex justify-between items-center">
+                    <div className="h-[8vh] rounded-lg bg-green-500 w-[100%] px-5  flex justify-between items-center">
                         <textarea type="text" id="content" value={messageData.text} name='content' onChange={(e) => setMessageData({ ...messageData, text: e.target.value })} placeholder='Type a Message...' rows={1} className='py-3 px-3 w-[90%] outline-none bg-green-500 text-white placeholder-white break-words overflow-auto ' onKeyDown={(e) => { e.key === "Enter" && sendMessage() }}></textarea>
                         <div className="p-3 hover:bg-green-400 rounded-lg">
                             <IoSendSharp className='text-2xl text-white' onClick={sendMessage} />
@@ -119,6 +129,8 @@ const ChatRoom = () => {
             </div>
 
         </div>
+        {/* <BottomMenu/> */}
+        </>
     )
 }
 

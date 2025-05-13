@@ -76,7 +76,7 @@ const BrowseFreelancers = () => {
             <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
           </div>
         </nav>
-        <section className='top-[8vh] relative p-8  bg-gray-100 grid-cols-1 md:grid-cols-2 grid lg:grid-cols-4 mx-auto  '>
+        <section className='top-[8vh] relative p-8 pb-20  bg-gray-100 grid-cols-1 md:grid-cols-2 grid lg:grid-cols-4 mx-auto  '>
           {
             freelancer.map((user, idx) => {
               return (
@@ -118,8 +118,8 @@ const BrowseFreelancers = () => {
         isOpen={isOpen}
         contentLabel="Freelancer Details"
         onRequestClose={() => setIsOpen(false)}
-        className="bg-white   w-[90vw] md:w-[80vw] lg:w-[38vw] h-auto   overflow-auto mx-auto mt-18 absolute z-50 md:mt-18 lg:mt-24 p-8 rounded-xl shadow-xl outline-none"
-        overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
+        className="bg-white w-[90vw] md:w-[80vw] lg:w-[38vw] max-h-[90vh] overflow-y-auto mx-auto mt-10 relative z-50 p-8 rounded-xl shadow-xl outline-none"
+        overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center overflow-y-auto"
       >
         {
           selectedFreelancer && (
@@ -179,8 +179,8 @@ const BrowseFreelancers = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex justify-between gap-4 mt-4 md:mt-8">
-                <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm w-full">
+              <div className="grid grid-cols-1 md:flex justify-between gap-2 md:gap-4 mt-4 md:mt-8">
+                <button className="bg-green-500 hover:bg-green-600 text-white py-2 md:py-2 md:px-4 rounded-full text-sm w-full">
                   Invite to Job
                 </button>
                 <button onClick={() => handleChatClick(selectedFreelancer)} className=" flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full text-sm w-full">
@@ -188,7 +188,7 @@ const BrowseFreelancers = () => {
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded-full text-sm w-full"
+                  className="bg-gray-300 hover:bg-gray-400 text-black py-2 md:px-4 rounded-full md:text-sm w-full"
                 >
                   Close
                 </button>

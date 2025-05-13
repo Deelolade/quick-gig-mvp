@@ -62,7 +62,7 @@ const PostGig = () => {
           </div>
         </nav>
         <section className=' top-[6vh] md:top-[8vh] relative p-5 flex items-center justify-center bg-gray-100'>
-          <form action="" className='md:mt-8  shadow-lg rounded-lg  w-[90%] md:w-[70%] lg:w-[40%] h-auto  p-4 ' onSubmit={handleSubmit}>
+          <form action="" className='md:mt-8 mb-10  shadow-lg rounded-lg  w-[90%] md:w-[70%] lg:w-[40%] h-auto  p-4 ' onSubmit={handleSubmit}>
             <div className="flex flex-col my-5">
               <label htmlFor="full name" className="text-[15px]">
                 Title:

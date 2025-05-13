@@ -23,7 +23,7 @@ const FreelancersDashboard = () => {
         console.error("Error fetching gig count:", error);
         const cachedData = localStorage.getItem("total_proposal_count")
         if (cachedData) {
-          setGigCount(JSON.parse(cachedData))
+          setProposalCount(JSON.parse(cachedData))
         }
       }
     }
@@ -37,7 +37,7 @@ const FreelancersDashboard = () => {
         <div className="dashboard lg:w-[85vw] bg-gray-100 min-h-screen">
           <nav className='h-[8vh] w-full lg:w-[85vw] py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20'>
             <h1 className='md:text-xl font-semibold'>Dashboard</h1>
-            <button className='px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition'>Refer a Client</button>
+            <button className='px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition'>Refer a Freelancer</button>
           </nav>
           <section className='pt-[12vh] md:pt-[15vh] lg:pt-[12vh] bg-gradient-to-br from-blue-500 to-red-500 px-6 md:px-12 lg:px-6 pb-16'>
             <div className='text-white'>
