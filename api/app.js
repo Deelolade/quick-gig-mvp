@@ -10,7 +10,8 @@ import proposalRouter from './routes/proposal.route.js';
 import { Server } from "socket.io";
 import { socketHandler } from './socket.js';
 import messageRouter from './routes/message.route.js';
-const port = 5500;
+import { arcjetMiddleware } from './utils/arcjet.js';
+const port = process.env.PORT || 5500;
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors({
 }));
 app.use(cookieParser());
 app.use(express.json());
+// app.use(arcjetMiddleware)
 // app.use(cors())
 
 
@@ -27,7 +29,9 @@ const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
         origin: "http://localhost:5173",
-        methods: ["GET", "POST"]
+        methods: ["GET", "POST"],
+    credentials: true
+
     }
 });
 

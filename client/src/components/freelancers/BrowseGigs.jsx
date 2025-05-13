@@ -33,7 +33,7 @@ const BrowseGigs = () => {
     toast.success("Proposal sent successfully")
     return res.data.Gigs
    } catch (error) {
-    toast.error("Submission failed:", error?.response.data || error.message)
+    toast.error("Submission failed:", error?.response?.data?.message || error.message)
    }
   };
   useEffect(() => {
@@ -117,11 +117,11 @@ const BrowseGigs = () => {
             </div>
             <div className=" my-4">
               <label htmlFor="" className='text-gray-700'>Delivery Time (Days):</label>
-              <input type="text"
+              <input type="date"
               name='duration'
               id='duration'
               onChange={handleChange}
-              placeholder='eg. 4'
+              placeholder='can deliver in less?'
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             </div>

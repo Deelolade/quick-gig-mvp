@@ -6,7 +6,7 @@ const Footer = () => {
     const today = new Date();
     return (
         <>
-            <footer className='pt-12 bg-black border-t mx-auto border-white/10 bg-gradient-to-b from-black/40 to-purple-800/35'>
+            <footer className='pt-12 px-6 bg-black border-t mx-auto border-white/10 bg-gradient-to-b from-black/40 to-purple-800/35'>
                 <div className="max-w-6xl  mx-auto">
                 <div className="grid lg:flex justify-between lg:grid-cols-4  mt-5 mb-8 gap-7">
                     <div className="">

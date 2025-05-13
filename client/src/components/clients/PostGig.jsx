@@ -4,6 +4,7 @@ import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import BottomMenu from './BottomMenu';
 
 
 const PostGig = () => {
@@ -50,17 +51,18 @@ const PostGig = () => {
   
 
   return (
+    <>
     <div className='flex justify-between  bg-gray-100 h-[100vh]'>
       <ClientSideBar />
-      <div className="dashboard w-[85%] bg-gray-100 h-[auto] ">
-        <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
-          <h1 className='text-2xl font-semibold'>Post a Job </h1>
+      <div className="dashboard w-full lg:w-[85vw] bg-gray-100 min-h-screen ">
+        <nav className='h-[8vh] w-full lg:w-[85vw] py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
+          <h1 className='md:text-2xl font-semibold'>Post a Job </h1>
           <div className="">
             <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
           </div>
         </nav>
-        <section className='top-[8vh] relative p-5 flex items-center justify-center bg-gray-100'>
-          <form action="" className='mt-8 shadow-lg rounded-lg w-[40%] h-auto p-4 ' onSubmit={handleSubmit}>
+        <section className=' top-[6vh] md:top-[8vh] relative p-5 flex items-center justify-center bg-gray-100'>
+          <form action="" className='md:mt-8 mb-10  shadow-lg rounded-lg  w-[90%] md:w-[70%] lg:w-[40%] h-auto  p-4 ' onSubmit={handleSubmit}>
             <div className="flex flex-col my-5">
               <label htmlFor="full name" className="text-[15px]">
                 Title:
@@ -131,6 +133,8 @@ const PostGig = () => {
         </section>
       </div>
     </div>
+    <BottomMenu/>
+    </>
   )
 }
 

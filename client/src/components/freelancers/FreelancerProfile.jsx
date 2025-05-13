@@ -2,13 +2,15 @@ import { useState, useEffect, useRef } from 'react'
 import FreelancerSideBar from '../freelancers/FreelancerSideBar'
 import axios from "axios"
 import { useDispatch, useSelector } from 'react-redux';
-import { updateFailure, updateStart, updateSuccess } from '../../redux/user/userSlice';
+import { updateFailure, updateStart, updateSuccess,logOut } from '../../redux/user/userSlice';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GiCancel } from "react-icons/gi";
+import { useNavigate } from 'react-router-dom';
 
 const ClientProfile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [socialLinks, setSocialLinks] = useState({
@@ -96,6 +98,10 @@ const removeSkill = (indexToRemove) => {
     setSocialLinks((prev) => ({ ...prev, [name]: value }))
 
   }
+  const signOut = ()=>{
+      dispatch(logOut())
+      navigate("/")
+    }
   return (
     <div className='flex justify-between  bg-gray-100 min-h-screen'>
       <FreelancerSideBar />
@@ -103,7 +109,7 @@ const removeSkill = (indexToRemove) => {
         <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
           <h1 className='text-3xl font-semibold'>Edit Profile</h1>
           <div className="">
-            <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Client</button>
+            <button onClick={signOut} className='px-3 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg'>Sign Out</button>
           </div>
         </nav>
         <div className="max-w-2xl mx-auto px-4 py-32 ">
