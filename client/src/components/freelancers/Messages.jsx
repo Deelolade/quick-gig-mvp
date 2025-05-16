@@ -122,8 +122,6 @@ useEffect(() => {
       room: selectedUser._id,
       createdAt: new Date().toISOString(),
     }
-    // const res = await axios.post("http://localhost:5500/messages", data, { withCredentials: true })
-    // res.data
     socket.current.emit("send_message", data)
     setMessages((prev) => [...prev, data])
     setMessageData({ content: "" })
@@ -153,12 +151,12 @@ useEffect(() => {
         </div>)}
 
       <div className='flex '>
-        <aside className='w-[15vw] h-screen overflow-y-auto bg-green-500  px-2 text-white  py-4 flex flex-col justify-between shadow-md'>
+        <aside className='w-[15vw] md:w-[10vw] lg:w-[15vw] h-screen overflow-y-auto bg-green-500  px-2 text-white  py-4 flex flex-col justify-between shadow-md'>
           <div className="">
             <Link to="/dashboard">
               <FaChevronLeft />
             </Link>
-            <div className=" flex justify-between items-center my-5 px-3 bg-white rounded-lg">
+            <div className=" hidden lg:flex justify-between items-center my-5 md:px-3 bg-white rounded-lg">
               <FaSearch className='text-green-500' />
               <input type="text" placeholder='Search for chat' className='py-3 text-gray-900 outline-none  w-[90%]' value={searchedValue} onChange={handleChange} />
             </div>
@@ -166,26 +164,26 @@ useEffect(() => {
 
             {filteredUsers && filteredUsers.length > 0 ? (filteredUsers.map((user, idx) => {
               return (
-                <ul key={idx} className='flex  justify-start items-center my-2 bg-green-500 py-2 px-2 rounded-xl hover:bg-green-300 hover:text-green-700' onClick={() => handleClickedUser(user)} >
-                  <img src={user.profilePicture} alt="" className='w-12 h-12 rounded-full me-3' />
-                  <li className='font-semibold text-lg'>{user.userName}</li>
-                </ul>
+                <ul key={idx} className='flex justify-center md:justify-start items-center my-2 bg-green-500 py-2 md:px-2 rounded-xl hover:bg-green-300 hover:text-green-700' onClick={() => handleClickedUser(user)} >
+                <img src={user.profilePicture} alt="" className=' w-8 h-8 md:w-12 md:h-12 rounded-full md:me-3' />
+                <li className='font-semibold text-lg hidden lg:block'>{user.userName}</li>
+              </ul>
               )
             })) : <p className='text-lg text-center'>no users found..</p>}
           </div>
         </aside>
-        <section className='w-[85vw]'>
-          <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
-            <h1 className='text-2xl font-semibold'>Messages</h1>
-            <div className="">
+        <section className='w-full   lg:px-0 lg:w-[85%]'>
+          <nav className='h-[8vh] w-[94vw] lg:w-[85vw] py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
+            <h1 className='md:text-2xl font-semibold'>Messages</h1>
+            <div className="hidden md:block">
               <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
             </div>
           </nav>
 
           {selectedUser ? (
-            <div className="flex flex-col h-[92vh] py-5 max-w-4xl justify-center items-center w-[100%] mx-auto relative top-[8vh]">
-              <div className='max-w-4xl  h-[84vh]  w-[100%] overflow-y-auto overflow-x -hidden flex flex-col  px-2 py-4 space-x-4   '>
-                {messages.map((message, idx) => (
+            <div className="flex flex-col h-[92vh] px-3 md:py-5 max-w-4xl justify-center items-center w-[100%] mx-auto relative top-[8vh]">
+              <div className='max-w-4xl  h-[84vh]  w-[100%] overflow-y-auto overflow-x-hidden flex flex-col  px-2 py-4 space-x-4 '>
+                {messages && messages.map((message, idx) => (
                   <div key={idx} className={`flex ${message.senderId === currentUser._id ? 'justify-end' : 'items-start'} my-2`}>
                     <div
                       className={`px-4 py-3 rounded-2xl max-w-[75%] break-words ${message.senderId === currentUser._id ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-900'}`}
@@ -199,7 +197,7 @@ useEffect(() => {
               </div>
               <div className="h-[8vh] rounded-lg bg-green-500 w-[100%] px-5 flex justify-between items-center">
                 <textarea type="text" id="content" value={messageData.content} name='content' onChange={(e) => setMessageData({ ...messageData, content: e.target.value })} placeholder='Type a Message...' rows={1} className='py-3 px-3 w-[90%] outline-none bg-green-500 text-white placeholder-white break-words overflow-auto ' onKeyDown={(e) => { e.key === "Enter" && sendMessage() }}></textarea>
-                <div className="p-3 hover:bg-green-400 rounded-lg">
+                <div className="p-2 md:p-3 hover:bg-green-400 rounded-lg">
                   <IoSendSharp className='text-2xl text-white' onClick={sendMessage} />
                 </div>
               </div>

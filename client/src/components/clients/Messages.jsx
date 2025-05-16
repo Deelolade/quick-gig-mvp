@@ -130,7 +130,7 @@ useEffect(() => {
           })) : <p className='text-lg text-center'>no users found..</p>}
         </div>
       </aside>
-      <section className=' w-full   lg:px-0 lg:w-[85vw]'>
+      <section className=' w-full   lg:px-0 lg:w-[85%]'>
         <nav className='h-[8vh] w-[94vw] lg:w-[85vw] py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
           <h1 className='md:text-2xl font-semibold'>Messages</h1>
           <div className="hidden md:block">

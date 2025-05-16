@@ -6,7 +6,7 @@ import { FaMoneyCheckAlt } from "react-icons/fa";
 import { SlEnvolopeLetter } from "react-icons/sl";
 import { RiFileList2Fill } from "react-icons/ri";
 import { FaFileContract } from "react-icons/fa";
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import { RiContractFill } from "react-icons/ri";
 
 const ClientSideBar = () => {
