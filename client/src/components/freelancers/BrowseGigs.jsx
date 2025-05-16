@@ -6,6 +6,7 @@ import Modal from "react-modal"
 import { useSelector } from 'react-redux';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import BottomMenu from './BottomMenu';
 
 
 
@@ -33,7 +34,7 @@ const BrowseGigs = () => {
     toast.success("Proposal sent successfully")
     return res.data.Gigs
    } catch (error) {
-    toast.error("Submission failed:", error?.response.data || error.message)
+    toast.error("Submission failed:", error?.response?.data?.message || error.message)
    }
   };
   useEffect(() => {
@@ -43,27 +44,32 @@ const BrowseGigs = () => {
           { withCredentials: true }
         )
         setGigs(res.data.Gigs)
+        localStorage.setItem("cached_gigs", JSON.stringify(res.data.Gigs) )
       } catch (error) {
         console.error('Failed to fetch freelancers:', error);
+        const cachedData = localStorage.getItem("cached_gigs")
+        if (cachedData) {
+          setProposalCount(JSON.parse(cachedData))
+        }
       }
     }
     getGigs()
   }, [])
   return (
-    <div className='flex justify-between  bg-gray-100 h-[100vh]'>
+    <>
+    <div className='lg:flex lg:justify-between  bg-gray-100 h-[100vh]'>
       <SideBar />
-      <div className="dashboard w-[85%] bg-gray-100 h-[auto] ">
-        <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
-          <h1 className='text-2xl font-semibold'>Browse Gigs </h1>
-          <div className="">
-            <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
-          </div>
-        </nav>
-        <section className='top-[8vh] relative p-8  bg-gray-100 grid grid-cols-4 mx-auto  '>
+      <div className="dashboard lg:w-[85vw] bg-gray-100 min-h-screen">
+          <nav className='h-[8vh] w-full lg:w-[85vw] py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20'>
+            <h1 className='md:text-xl font-semibold'>Browse Gigs</h1>
+            <button className='px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition'>Refer a Freelancer</button>
+          </nav>
+        <section className='top-[8vh] relative p-8  bg-gray-100 mb-12 '>
+          <div className=" mb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-auto">
           {
             gigs.map((gig, idx) => {
               return (
-                <div className="w-full md:w-[350px] mt-6 bg-white shadow-md border border-gray-200 rounded-2xl p-4 transition transform hover:scale-105 hover:shadow-xl" key={idx}>
+                <div className="w-full md:w-[95%] mt-6 bg-white shadow-md border border-gray-200 rounded-2xl p-4 transition transform hover:scale-105 hover:shadow-xl " key={idx}>
                   <div className="mt-2">
                     <h2 className="text-xl font-semibold text-gray-800">{gig.title}</h2>
 
@@ -88,17 +94,17 @@ const BrowseGigs = () => {
                     </div>
                   </div>
                 </div>
-
               )
             })
           }
+          </div>
         </section>
       </div>
       <Modal
         isOpen={isOpen}
         onRequestClose={() => setIsOpen(false)}
         contentLabel="Job Details"
-        className="bg-white w-[38vw] h-auto  mx-auto mt-24 p-8 rounded-xl shadow-xl outline-none"
+        className="bg-white w-[90vw] md:w-[80vw] lg:w-[38vw] h-auto  mx-auto mt-24 p-8 rounded-xl shadow-xl outline-none"
         overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
       >
         {selectedJob && (
@@ -117,11 +123,11 @@ const BrowseGigs = () => {
             </div>
             <div className=" my-4">
               <label htmlFor="" className='text-gray-700'>Delivery Time (Days):</label>
-              <input type="text"
+              <input type="date"
               name='duration'
               id='duration'
               onChange={handleChange}
-              placeholder='eg. 4'
+              placeholder='can deliver in less?'
               className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             </div>
@@ -151,8 +157,9 @@ const BrowseGigs = () => {
           </>
         )}
       </Modal>
-
     </div>
+    <BottomMenu/>
+    </>
   )
 }
 

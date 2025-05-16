@@ -2,11 +2,14 @@ import { useState, useEffect, useRef } from 'react'
 import ClientSideBar from '../clients/ClientSideBar'
 import axios from "axios"
 import { useDispatch, useSelector } from 'react-redux';
-import { updateFailure, updateStart, updateSuccess } from '../../redux/user/userSlice';
+import { updateFailure, updateStart, updateSuccess, logOut } from '../../redux/user/userSlice';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; 
+import { useNavigate } from 'react-router-dom';
+import BottomMenu from './BottomMenu';
 
 const ClientProfile = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch(); 
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
@@ -80,20 +83,23 @@ const ClientProfile = () => {
     setSocialLinks((prev)=>({...prev, [name]:value}))
 
   }
+  const signOut = ()=>{
+    dispatch(logOut())
+    navigate("/")
+  }
   return (
-    <div className='flex justify-between  bg-gray-100 min-h-screen'>
+    <>
+    <div className='flex justify-between h-full  bg-gray-100 min-h-screen'>
       <ClientSideBar />
-      <div className="dashboard w-[85%]  min-h-screen bg-gray-100 ">
-        <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
+      <div className="dashboard w-full lg:w-[85%] md:pb-32">
+        <nav className='h-[8vh] w-full lg:w-[85%]   py-4  px-5  md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
           <h1 className='text-2xl font-semibold'>Profile</h1>
           <div className="">
-            <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
+            <button onClick={signOut} className='px-3 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg'>Sign Out</button>
           </div>
         </nav>
-        <div className="max-w-2xl mx-auto px-4 py-8">
-          <h1 className="text-2xl font-semibold mb-6">Edit Profile</h1>
-
-          <form className=" max-w-xl space-y-5" onSubmit={handleSubmit}>
+        <div className="max-w-2xl mx-auto px-4 py-8 pb-32 lg:pb-8 relative  top-[8vh]">
+          <form className=" max-w-xl space-y-5 mx-auto" onSubmit={handleSubmit}>
             <input type="file" accept='image/*' id="profilePicture"  onChange={handleImageChange} ref={filePickerRef} hidden/>
             <div className="relative" onClick={() => filePickerRef.current.click()} >
             <img src={imageFileUrl || currentUser.profilePicture} alt="" className='w-52 h-52 rounded-full bg-red-300 mx-auto'/>
@@ -252,6 +258,8 @@ const ClientProfile = () => {
         </div>
       </div>
     </div>
+    <BottomMenu/>
+    </>
   )
 }
 

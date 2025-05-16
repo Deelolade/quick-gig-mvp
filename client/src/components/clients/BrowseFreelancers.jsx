@@ -5,8 +5,9 @@ import Modal from "react-modal"
 import { Link, useNavigate } from 'react-router-dom'
 import { FaTelegramPlane } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux'
-import {io} from "socket.io-client"
 import { addUser } from '../../redux/chat/chatSlice'
+import {io} from "socket.io-client"
+import BottomMenu from './BottomMenu'
 
 const BrowseFreelancers = () => {
   const dispatch = useDispatch();
@@ -14,10 +15,10 @@ const BrowseFreelancers = () => {
   const [freelancer, setFreelancer] = useState([])
   const [isOpen, setIsOpen] = useState(false)  
   const [loading, setLoading] = useState(false);
+  const [sentInvites, setSentInvites] = useState({});
   const { currentUser } = useSelector(state => state.user);
   const [selectedFreelancer, setSelectedFreelancer] = useState(null); // <-- store clicked job
-const socket = io('http://localhost:5500', {withCredentials:true})
-
+  const socket = io('http://localhost:5500', {withCredentials:true})
   useEffect(() => {
     const getFreelancers = async () => {
       setLoading(true)
@@ -45,16 +46,22 @@ const socket = io('http://localhost:5500', {withCredentials:true})
   }, [])
   const handleChatClick = (user) => {
     dispatch(addUser(user))
-    navigate("/messages", {state:{selectedUser : user, senderUser: currentUser}})
-    socket.emit("initiate_chat", {
-      from: currentUser._id,
-      to:user._id
+    socket.emit("chat_request", {
+      from:currentUser,
+      to: user._id
     })
-    console.log(user._id)
+    console.log("Client initiated chat with:", user._id);
+    setSentInvites((prev) => ({...prev , [user._id]:true}))
   }
+  useEffect(() => {
+    if (socket && currentUser?._id) {
+      socket.emit("register_user", currentUser._id);
+    }
+  }, [socket, currentUser]);
   return (
+    <>
     <div className='flex justify-between  bg-gray-100 h-[100vh]'>
-       {loading && (
+      {loading && (
         <div className="fixed  inset-0 flex justify-center items-center bg-black/20 z-[9999] ">
           <div className="bg-white p-4 rounded-lg shadow-lg">
             <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
@@ -62,14 +69,14 @@ const socket = io('http://localhost:5500', {withCredentials:true})
         </div>
       )}
       <ClientSideBar />
-      <div className="dashboard w-[85%] bg-gray-100 h-[auto] ">
-        <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
-          <h1 className='text-2xl font-semibold'>Browse Freelancers </h1>
+      <div className="dashboard w-full lg:w-[85%] bg-gray-100 h-[auto] ">
+        <nav className='h-[8vh] w-full lg:w-[85vw]  py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
+          <h1 className='md:text-2xl font-semibold'>Browse Freelancers </h1>
           <div className="">
             <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
           </div>
         </nav>
-        <section className='top-[8vh] relative p-8  bg-gray-100 grid grid-cols-4 mx-auto  '>
+        <section className='top-[8vh] relative p-8 pb-20  bg-gray-100 grid-cols-1 md:grid-cols-2 grid lg:grid-cols-4 mx-auto  '>
           {
             freelancer.map((user, idx) => {
               return (
@@ -102,22 +109,17 @@ const socket = io('http://localhost:5500', {withCredentials:true})
                     </button>
                   </div>
                 </div>
-
-
-
               )
             })
           }
-
-
         </section>
       </div>
       <Modal
         isOpen={isOpen}
         contentLabel="Freelancer Details"
         onRequestClose={() => setIsOpen(false)}
-        className="bg-white w-[38vw] h-auto  mx-auto mt-24 p-8 rounded-xl shadow-xl outline-none"
-        overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center"
+        className="bg-white w-[90vw] md:w-[80vw] lg:w-[38vw] max-h-[90vh] overflow-y-auto mx-auto mt-10 relative z-50 p-8 rounded-xl shadow-xl outline-none"
+        overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center overflow-y-auto"
       >
         {
           selectedFreelancer && (
@@ -132,7 +134,7 @@ const socket = io('http://localhost:5500', {withCredentials:true})
                 <h2 className="text-2xl font-bold">{selectedFreelancer.fullName}</h2>
                 <p className="text-gray-500 text-sm mt-1">{selectedFreelancer.topSkill || 'Freelancer'}</p>
                 {/* Verified Badge */}
-                <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center gap-2 md:mt-2">
                   <span className="text-green-500 text-lg font-semibold">Verified</span>
                   <div className="relative flex justify-center items-center">
                     <div className="w-2 h-2 bg-green-500 rounded-full z-30" />
@@ -142,16 +144,16 @@ const socket = io('http://localhost:5500', {withCredentials:true})
               </div>
 
               {/* Bio */}
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold mb-2">About Me</h3>
+              <div className="md:mt-6">
+                <h3 className="text-lg font-semibold md:mb-2">About Me</h3>
                 <p className="text-gray-700 text-sm leading-relaxed">
                   {selectedFreelancer.bio || 'No bio provided yet.'}
                 </p>
               </div>
 
               {/* Skills */}
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold mb-2">Skills</h3>
+              <div className=" mt-2 md:mt-6">
+                <h3 className="text-lg font-semibold md:mb-2">Skills</h3>
                 <div className="flex flex-wrap gap-2">
                   {selectedFreelancer.skills?.length ? (
                     selectedFreelancer.skills.map((skill, idx) => (
@@ -169,24 +171,24 @@ const socket = io('http://localhost:5500', {withCredentials:true})
               </div>
 
               {/* Details Section */}
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <div className="bg-gray-100 p-4 rounded-xl text-center">
+              <div className=" mt-3 md:mt-6 grid grid-cols-2 gap-4">
+                <div className="bg-gray-100 p-2 md:p-4 rounded-xl text-center">
                   <p className="text-xs text-gray-500">Location</p>
                   <p className="text-sm font-medium">{selectedFreelancer.location || 'Unknown'}</p>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex justify-between gap-4 mt-8">
-                <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full text-sm w-full">
+              <div className="grid grid-cols-1 md:flex justify-between gap-2 md:gap-4 mt-4 md:mt-8">
+                <button className="bg-green-500 hover:bg-green-600 text-white py-2 md:py-2 md:px-4 rounded-full text-sm w-full">
                   Invite to Job
                 </button>
                 <button onClick={() => handleChatClick(selectedFreelancer)} className=" flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full text-sm w-full">
-                  Send Message <FaTelegramPlane className='mx-2' />
+                  {!sentInvites[selectedFreelancer._id]  ? "Send Message " :"Sent"}<FaTelegramPlane className='mx-2' />
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded-full text-sm w-full"
+                  className="bg-gray-300 hover:bg-gray-400 text-black py-2 md:px-4 rounded-full md:text-sm w-full"
                 >
                   Close
                 </button>
@@ -196,6 +198,8 @@ const socket = io('http://localhost:5500', {withCredentials:true})
         }
       </Modal>
     </div>
+    <BottomMenu/>
+    </>
   )
 }
 
