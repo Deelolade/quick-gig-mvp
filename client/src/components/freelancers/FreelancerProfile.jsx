@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GiCancel } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
+import BottomMenu from './BottomMenu';
 
 const ClientProfile = () => {
   const dispatch = useDispatch();
@@ -103,10 +104,11 @@ const removeSkill = (indexToRemove) => {
       navigate("/")
     }
   return (
+    <>
     <div className='flex justify-between  bg-gray-100 min-h-screen'>
       <FreelancerSideBar />
-      <div className="dashboard w-[85%]  min-h-screen bg-gray-100 ">
-        <nav className='h-[8vh] w-[85vw]  py-4 px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
+      <div className="dashboard w-full lg:w-[85%]  min-h-screen bg-gray-100 ">
+        <nav className='h-[8vh] lg:w-[85vw] w-full px-5  py-4 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
           <h1 className='text-3xl font-semibold'>Edit Profile</h1>
           <div className="">
             <button onClick={signOut} className='px-3 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg'>Sign Out</button>
@@ -287,6 +289,8 @@ const removeSkill = (indexToRemove) => {
         </div>
       </div>
     </div>
+    <BottomMenu/>
+    </>
   )
 }
 

@@ -34,7 +34,7 @@ const FreelancersDashboard = () => {
       <div className='flex justify-between'>
         <SideBar />
         <div className="dashboard lg:w-[85vw] bg-gray-100 min-h-screen">
-          <nav className='h-[8vh] w-full lg:w-[85vw] py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20'>
+          <nav className='iphone:h-[8vh] xsmax:h-[8vh] w-full lg:w-[85vw] py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20'>
             <h1 className='md:text-xl font-semibold'>Dashboard</h1>
             <button className='px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition'>Refer a Client</button>
           </nav>
@@ -73,11 +73,11 @@ const FreelancersDashboard = () => {
               {/* Build Your Reputation */}
               <div className="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl flex flex-col justify-between">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className='text-xl font-semibold text-gray-700'>Build Your Reputation</h2>
+                  <h2 className='text-xl font-semibold text-gray-700'>Stay Connected</h2>
                 </div>
-                <p className='text-gray-500 text-sm mb-6'>Currently in development or collaboration stage. You’re one step closer to increasing your credibility and showcasing your expertise!</p>
+                <p className='text-gray-500 text-sm mb-6'>Collaborate with clients and respond to messages promptly. Building strong communication is key to your reputation and success.</p>
                 <div className="flex justify-between gap-4">
-                  <Link to='/messages' className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm font-semibold transition text-center w-full">View Progress</Link>
+                  <Link to='/messages' className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm font-semibold transition text-center w-full">Go to Messages</Link>
                   <button className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 text-sm font-semibold transition w-full">Learn More</button>
                 </div>
               </div>

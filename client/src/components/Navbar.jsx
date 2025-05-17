@@ -85,7 +85,7 @@ const Navbar = () => {
             <div className={`${isTop ? "bg-black" : "bg-black/50 backdrop-blur-sm" } z-50 fixed w-screen  `}  onMouseLeave={() => setHoveredItem(null)} >
                 <nav className={`navbar px-6   max-w-6xl text-white flex h-[10vh] 2xl:h-[8vh] w-[95vw] lg:w-[95vw]  xl:w-[95vw] 2xl:w-[80vw]  justify-between items-center mx-auto`}>
                     <ul className="nav-links flex space-x-4 justify-center items-center ">
-                        <h1 className="text-3xl mb-2 bg-red-50 font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">Quick~Gig</h1>
+                        <h1 className="text-2xl md:text-3xl mb-2 bg-red-50 font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">Quick~Gig</h1>
                         {navItems.map((item, index) => (
                             <div key={index} className="relative font-bold  hidden md:hidden lg:flex  ">
                                 {/* Navigation Item */}
