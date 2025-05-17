@@ -6,9 +6,9 @@ const Footer = () => {
     const today = new Date();
     return (
         <>
-            <footer className='pt-12 px-6 bg-black border-t mx-auto border-white/10 bg-gradient-to-b from-black/40 to-purple-800/35'>
-                <div className="max-w-6xl  mx-auto">
-                <div className="grid lg:flex justify-between lg:grid-cols-4  mt-5 mb-8 gap-7">
+            <footer className='pt-12 px-2 md:px-6 bg-black border-t mx-auto border-white/10 bg-gradient-to-b from-black/40 to-purple-800/35'>
+                <div className="md:max-w-6xl  mx-auto ">
+                <div className="grid lg:flex justify-between lg:grid-cols-4  mt-5 mb-8 gap-7 mx-0">
                     <div className="">
                         <h5 className='text-gray-300 text-2xl font-bold '>Quick-Gig</h5>
                         <p className='w-[300px] text-gray-300 text-[15px] pt-4 font-semibold'>Connecting talented Freelancers and Clients for fast and efficient project delivery.</p>
@@ -23,7 +23,7 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div className="">
-                        <h5 className='text-gray-300 text-xl font-bold'>Support</h5>
+                        <h5 className='text-gray-300 text-xl font-bold '>Support</h5>
                         <ul className='text-gray-400 text-[15px] mt-3 font-semibold'>
                             <li className='hover:text-white leading-7'>Help Center</li>
                             <li className='hover:text-white leading-7'>Terms & Conditions</li>

@@ -25,17 +25,17 @@ const Home = () => {
     return (
         <>
             <Navbar />
-            <div className=" bg-black  h-auto">
+            <div className=" bg-black  h-auto  md:p-5 max-w-full">
                 <div className=" bg-black min-h-screen mx-auto max-w-6xl  overflow-hidden py-28">
                     <div className="flex inset-0 -z-10 overflow-hidden">
                         <div className="absolute -z-10 inset-0 bg-red-300"></div>
                         <div className="absolute -z-9 top-36 right-0 w-96 h-96 bg-purple-600 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
                         <div
-                            className="absolute -z-9 top-[90vh] left-4 w-96 h-96 bg-blue-600 rounded-full filter blur-3xl opacity-20 animate-pulse"
+                            className="absolute -z-9 top-[120vh] left-5 md:top-[90vh] md:left-[30%] lg:left-4 w-52 h-52 md:w-96 md:h-96 bg-blue-600 rounded-full filter blur-3xl opacity-20 animate-pulse"
                             style={{ animationDelay: "2s" }}
                         ></div>
                         <div
-                            className="absolute -z-9 top-[40%] left-1/3 w-96 h-96 bg-cyan-500 rounded-full filter blur-3xl opacity-10 animate-pulse"
+                            className=" hidden md:block absolute -z-9 md:top-[40%] md:left-2.5 lg:left-1/3 w-5 md:w-96 md:h-96 bg-cyan-500 rounded-full filter blur-3xl opacity-10 animate-pulse"
                             style={{ animationDelay: "4s" }}
                         ></div>
                     </div>
@@ -262,95 +262,97 @@ const Home = () => {
                         ></div>
                     </div>
                     <div className="flex flex-col">
-                    <motion.div
-                        ref={refOne}
-                        initial={{ opacity: 1, y: 20 }}
-                        animate={inviewOne ?  { opacity: 1, y: 0 } : { opacity: 1, y: 50 }}
-                        transition={{ duration: 0.6, ease: "easeInOut" }}
-                        className=" text-white relative  z-10 mx-auto  text-left-center flex flex-col  justify-center items-center">
-                        <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8">
-                            <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
-                            <span>QuickGig — Freelance. Fast. Together.</span>
-                        </div>
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight text-center">
-                            Hire fast.{" "}
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600">
-                                Connect deeply.
-                            </span>{" "}
-                            Work smart.
-                        </h1>
-                        <div className="">
-                            <p className="mt-6 text-lg md:text-2xl text-gray-300 max-w-3xl mx-auto text-center">
-                                QuickGig is the freelance marketplace to collaborate, connect, and
-                                grow. Need a quick fix or a fresh logo? Want to share ideas or
-                                trends? QuickGig is built for you.
-                            </p>
-                            <div className="mt-8 flex flex-wrap gap-4 justify-center">
-                                <Link
-                                    to="/role"
-                                    className="text-white items-center  bg-gradient-to-r from-purple-600 to-pink-500  text-xl font-bold rounded-lg  px-6 py-3  relative transition-transform duration-300"
-                                >
-                                    <span>
-                                        Start Hiring <FaArrowRightLong className="inline " />{" "}
-                                    </span>
-                                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer"></span>
-                                </Link>
-                                <Link
-                                    to="/role"
-                                    className=" py-3 px-6 items-center rounded-lg border border-gray-600 text-xl font-bold"
-                                >
-                                    See ChatRooms
-                                    <SiMarketo className="inline ms-2" />
-                                </Link>
-                            </div>
-                            <div className="flex justify-center items-center mt-8 space-x-4">
-                                <div className="px-4 py-2 bg-purple-900/30 backdrop-blur-sm border flex items-center space-x-2 border-purple-800 rounded-full">
-                                    {" "}
-                                    <FaSignsPost className="text-pink-500 font-bold text-xl" />
-                                    <span className="font-semibold text-gray-300 ">
-                                        Post a Gig
-                                    </span>{" "}
-                                </div>
-                                <div className="px-4 py-2 bg-purple-900/30 backdrop-blur-sm border flex items-center space-x-2 border-purple-800 rounded-full">
-                                    {" "}
-                                    <FaSearchDollar className="text-blue-500 font-bold text-xl" />
-                                    <span className="font-semibold text-gray-300">
-                                        Find Work
-                                    </span>{" "}
-                                </div>
-                                <div className="px-4 py-2 bg-purple-900/30 backdrop-blur-sm border flex items-center space-x-2 border-purple-800 rounded-full">
-                                    {" "}
-                                    <HiOutlineUserGroup className="text-yellow-500 font-bold text-xl" />
-                                    <span className="font-semibold text-gray-300">
-                                        Join The Space
-                                    </span>{" "}
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                        <div className="relative z-20">
-                            <div className="right-2 absolute z-20 top-12   animate-float  " style={{animationDelay: "1.2s", animationDuration:"4s"}}>
-                                <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-1 rounded-lg shadow-lg rotate-6">
-                                <div className="bg-gray-900 p-3 rounded-md ">
-                                    <IoSparklesOutline className=" text-pink-500 text-2xl z-30"/>
-                                </div>
-                                </div>
-                            </div>
-                            <div className="-bottom-0 left-1 absolute  animate-float z-20 " style={{animationDelay: "1.2s", animationDuration:"4s"}}>
-                                <div className="bg-gradient-to-br from-blue-400 to-blue-600 p-1 rounded-lg shadow-lg rotate-6">
-                                <div className="bg-gray-900 p-3 rounded-md ">
-                                    <PiLightningBold className=" text-blue-500 text-2xl z-30"/>
-                                </div>
-                                </div>
-                            </div>
                         <motion.div
-                        ref={refOne}
-                        initial={{ opacity: 0, y: 0 }}
-                        animate={inviewOne ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
-                        transition={{ duration: 0.6, ease: "easeInOut" }}
-                        className=" z-10 mt-12 flex relative justify-center mx-auto">
-                            <video src={Homevideo} className="max-w-6xl rounded-2xl z-50 lg:h-[100%] mx-auto" autoPlay loop playsInline muted></video>
+                            ref={refOne}
+                            initial={{ opacity: 1, y: 20 }}
+                            animate={inviewOne ? { opacity: 1, y: 0 } : { opacity: 1, y: 50 }}
+                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                            className=" text-white relative  z-10 mx-auto  text-left-center flex flex-col  justify-center items-center ">
+                            <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8 whitespace-nowrap max-w-full">
+                                <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
+                                <span className="text-[13px] md:text-sm">QuickGig — Freelance. Fast. Together.</span>
+                            </div>
+                            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight text-center">
+                                Hire fast.{" "}
+                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600">
+                                    Connect deeply.
+                                </span>{" "}
+                                Work smart.
+                            </h1>
+                            <div className="">
+                                <p className="mt-6 text-lg md:text-2xl text-gray-300 max-w-3xl mx-auto text-center">
+                                    QuickGig is the freelance marketplace to collaborate, connect, and
+                                    grow. Need a quick fix or a fresh logo? Want to share ideas or
+                                    trends? QuickGig is built for you.
+                                </p>
+                                <div className="mt-8 flex flex-wrap gap-4 justify-center">
+                                    <Link
+                                        to="/role"
+                                        className="text-white items-center  bg-gradient-to-r from-purple-600 to-pink-500  text-xl font-bold rounded-lg  px-6 py-3  relative transition-transform duration-300"
+                                    >
+                                        <span>
+                                            Start Hiring <FaArrowRightLong className="inline " />{" "}
+                                        </span>
+                                        <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer"></span>
+                                    </Link>
+                                    <Link
+                                        to="/role"
+                                        className=" py-3 px-6 items-center rounded-lg border border-gray-600 text-xl font-bold"
+                                    >
+                                        See ChatRooms
+                                        <SiMarketo className="inline ms-2" />
+                                    </Link>
+                                </div>
+                                <div className="grid  grid-cols-2 md:grid-cols-3 mt-8 gap-x-4 ">
+                                    <div className="px-4 py-2 min-h-[48px] bg-purple-900/30 backdrop-blur-sm border justify-center flex items-center space-x-2 border-purple-800 rounded-full">
+                                        {" "}
+                                        <FaSignsPost className="text-pink-500 font-bold  text-xl" />
+                                        <span className="font-semibold text-[15px] text-gray-300 whitespace-nowrap">
+                                            Post a Gig
+                                        </span>{" "}
+                                    </div>
+                                    <div className="px-4 py-2 min-h-[48px] bg-purple-900/30 backdrop-blur-sm border flex  justify-center items-center space-x-2 border-purple-800 rounded-full">
+                                        {" "}
+                                        <FaSearchDollar className="text-blue-500 font-bold text-xl" />
+                                        <span className="font-semibold text-[15px] text-gray-300 whitespace-nowrap">
+                                            Find Work
+                                        </span>{" "}
+                                    </div>
+                                    <div className="col-span-2 md:col-span-1 flex justify-center md:justify-normal">
+                                        <div className="md:w-full mt-3 md:mt-0 px-4 py-2 min-h-[48px] bg-purple-900/30 backdrop-blur-sm border flex justify-center items-center space-x-2 border-purple-800 rounded-full">
+                                            {" "}
+                                            <HiOutlineUserGroup className="text-yellow-500 font-bold text-xl" />
+                                            <span className="font-semibold text-[15px] text-gray-300 whitespace-nowrap">
+                                                Join The Space
+                                            </span>{" "}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </motion.div>
+                        <div className="relative z-20 md:w-[700px] lg:w-[100%] mx-auto max-w-full">
+                            <div className="right-2 absolute z-20 top-12   animate-float  " style={{ animationDelay: "1.2s", animationDuration: "4s" }}>
+                                <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-1 rounded-lg shadow-lg rotate-6">
+                                    <div className="bg-gray-900 p-3 rounded-md ">
+                                        <IoSparklesOutline className=" text-pink-500 text-2xl z-30" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="-bottom-0 left-1 absolute  animate-float z-20 " style={{ animationDelay: "1.2s", animationDuration: "4s" }}>
+                                <div className="bg-gradient-to-br from-blue-400 to-blue-600 p-1 rounded-lg shadow-lg rotate-6">
+                                    <div className="bg-gray-900 p-3 rounded-md ">
+                                        <PiLightningBold className=" text-blue-500 text-2xl z-30" />
+                                    </div>
+                                </div>
+                            </div>
+                            <motion.div
+                                ref={refOne}
+                                initial={{ opacity: 0, y: 0 }}
+                                animate={inviewOne ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
+                                transition={{ duration: 0.6, ease: "easeInOut" }}
+                                className=" z-10 mt-12 flex relative justify-center mx-auto">
+                                <video src={Homevideo} className="max-w-6xl rounded-2xl z-50 lg:h-[100%] w-[90%] h-96 md:w-[700px] lg:w-[85%] mx-auto" autoPlay loop playsInline muted></video>
+                            </motion.div>
                         </div>
                     </div>
                 </div>
@@ -362,17 +364,17 @@ const Home = () => {
                     animate={inviewTwo ? { opacity: 1, y: 0 } : { opacity: 1, y: 50 }}
                     transition={{ duration: 0.6, ease: "easeInOut" }}
                     className=" flex justify-center items-center flex-col">
-                    <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8">
+                    <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8  whitespace-nowrap max-w-full">
                         <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
-                        <span className="">Why QuickGig — Freelance. Fast. Together.</span>
+                        <span className="text-[13px] md:text-sm">Why QuickGig — Freelance. Fast. Together.</span>
                     </div>
-                    <h1 className="text-5xl font-extrabold  text-white text-center ">
+                    <h1 className=" text-2xl md:text-5xl font-extrabold  text-white text-center ">
                         Why Choose{" "}
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600">
                             QuickGig?
                         </span>
                     </h1>
-                    <p className="text-lg text-gray-200 text-center mt-5 max-w-3xl">
+                    <p className="text-sm px-2 md:text-lg text-gray-200 text-center mt-5 max-w-3xl">
                         QuickGig is the freelance marketplace that brings Clients and
                         Freelancers together not just to work—but to collaborate, connect,
                         and grow. Need a quick fix or a fresh logo? Want to share ideas or
@@ -384,7 +386,7 @@ const Home = () => {
                     initial={{ opacity: 0, y: 0 }}
                     animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 50 }}
                     transition={{ duration: 0.6, ease: "easeInOut" }}
-                    className="grid grid-cols-1 max-w-6xl gap-6 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8 w-[70vw] mx-auto my-10">
+                    className="grid grid-cols-1 max-w-6xl gap-6 md:grid-cols-2 md:gap-6 lg:grid-cols-3 lg:gap-8 w-[95vw] mx-auto my-10">
                     <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-800 rounded-xl p-6 transition-all duration-300 group hover:border-purple-500/50 hover:bg-gray-900/80 hover:shadow-lg hover:shadow-purple-900/20 opacity-100 translate-y-0">
                         <div className="text-purple-500 font-bold text-3xl bg-purple-950  h-12 w-12 rounded-lg flex items-center justify-center">
                             <PiLightningBold className="  rounded-lg  " />
@@ -490,17 +492,17 @@ const Home = () => {
                     transition={{ duration: 0.6, ease: "easeInOut" }}
                     className="relative max-w-6xl mx-auto ">
                     <div className=" flex justify-center items-center flex-col mb-8">
-                        <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8">
+                        <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8 whitespace-nowrap max-w-full">
                             <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
-                            <span className="">Why QuickGig — Freelance. Fast. Together.</span>
+                            <span className="text-[13px] md:text-sm">QuickGig — Freelance. Fast. Together.</span>
                         </div>
-                        <h1 className="text-5xl font-extrabold  text-white text-center ">
+                        <h1 className="text-2xl md:text-5xl font-extrabold  text-white text-center ">
                             How {" "}
                             <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600">
                                 QuickGig?
                             </span> Works
                         </h1>
-                        <p className="text-lg text-gray-200 text-center mt-5 max-w-3xl">
+                        <p className="text-sm md:text-lg text-gray-200 text-center mt-5 max-w-3xl">
                             QuickGig is the freelance marketplace that brings Clients and
                             Freelancers together not just to work.
                         </p>
@@ -515,7 +517,7 @@ const Home = () => {
                                 <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-purple-500/10 rounded-full animate-pulse"> </span>
                             </div>
                             <h4 className="text-white text-2xl font-bold my-5 ">Hire fast.</h4>
-                            <p className=" text-gray-400 text-lg ">Post your gig in just a few clicks and start receiving proposals within minutes.</p>
+                            <p className=" text-gray-400 text-sm md:text-lg p-2 md:p-0">Post your gig in just a few clicks and start receiving proposals within minutes.</p>
                         </div>
                         <div className="text-center ">
                             <div className="relative">
@@ -525,7 +527,7 @@ const Home = () => {
                                 <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-purple-500/10 rounded-full animate-pulse"> </span>
                             </div>
                             <h4 className="text-white text-2xl font-bold my-5">Work Smart.</h4>
-                            <p className=" text-gray-400 text-lg "> Ask questions, share updates, or just vibe with others in the QuickGig ecosystem.</p>
+                            <p className=" text-gray-400 text-sm md:text-lg p-2 md:p-0"> Ask questions, share updates, or just vibe with others in the QuickGig ecosystem.</p>
                         </div>
                         <div className="text-center ">
                             <div className="relative">
@@ -535,7 +537,7 @@ const Home = () => {
                                 <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-purple-500/10 rounded-full animate-pulse"> </span>
                             </div>
                             <h4 className="text-white text-2xl font-bold my-5">Get gigs done.</h4>
-                            <p className=" text-gray-400 text-lg ">Send instant messages, share files, and keep your projects moving forward with smooth communication.</p>
+                            <p className=" text-gray-400 text-sm md:text-lg  p-2 md:p-0">Send instant messages, share files, and keep your projects moving forward with smooth communication.</p>
                         </div>
                     </div>
                     <div className="flex mt-16 mx-auto justify-center ">
@@ -552,18 +554,18 @@ const Home = () => {
                     animate={inviewThree ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
                     transition={{ duration: 0.6, ease: "easeInOut" }}
                     className="my-24 flex justify-center items-center flex-col">
-                    <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8">
-                        <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
-                        <span className=" ">QuickGig — Freelance. Fast. Together.</span>
-                    </div>
-                    <h1 className="text-5xl   font-bold text-white leading-tight text-center">
+                    <div className="inline-flex items-center px-4 py-2 text-white bg-purple-900/30 backdrop-blur-sm rounded-full border border-purple-700/40 mb-8 whitespace-nowrap max-w-full">
+                            <IoSparklesOutline className="mx-2 text-pink-500 font-bold" />
+                            <span className="text-[13px] md:text-sm">QuickGig — Freelance. Fast. Together.</span>
+                        </div>
+                    <h1 className="md:text-5xl text-xl   font-bold text-white leading-tight text-center">
                         Get Started With{" "}
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600">
                             Quick-Gig
                         </span>{" "}
                         Today.
                     </h1>
-                    <p className="mt-6 text-lg text-gray-300 max-w-4xl mx-auto text-center">
+                    <p className="mt-6  text-sm p-2 md:text-lg text-gray-300 max-w-4xl mx-auto text-center">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
                         iure quod assumenda aliquam voluptates sed reiciendis eligendi
                         repudiandae corporis labore.

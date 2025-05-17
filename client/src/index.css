@@ -56,4 +56,6 @@ body {
     /* transform: rotateX(45deg); */
     animation: float ease-in-out infinite;
 }
-
+input ::placeholder{
+    color: white;
+}

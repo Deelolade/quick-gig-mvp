@@ -6,7 +6,7 @@ import { FaMoneyCheckAlt } from "react-icons/fa";
 import { SlEnvolopeLetter } from "react-icons/sl";
 import { RiFileList2Fill } from "react-icons/ri";
 import { FaFileContract } from "react-icons/fa";
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 
 
 
@@ -15,10 +15,10 @@ const FreelancerSideBar = () => {
     const location = useLocation()
     return (
         <div>
-            <div className="sidebar bg-black w-[15%] h-[100%] fixed text-white px-5 py-4 flex flex-col justify-between shadow-md">
+            <div className="sidebar bg-black hidden w-0 lg:w-[15%] h-[100%] lg:fixed text-white px-5 py-4 lg:flex flex-col justify-between shadow-md">
                 <div className="w-[100%] px-3">
                     <div className="logo mb-9">
-                        <h1 className="text-xl mb-2 bg-red-50 font-bold bg-gradient-to-r from-blue-500 to-red-500 bg-clip-text text-transparent">Quick~Gig</h1>
+                        <h1 className="text-2xl mb-2 bg-red-50 font-bold bg-gradient-to-r from-blue-500 to-red-500 bg-clip-text text-transparent">Quick~Gig</h1>
                     </div>
                     <div className="links w-auto flex flex-col">
                         <Link to='/dashboard' className={`text-sm font-semibold w-full hover:bg-gray-500 px-2 py-4 my-2 rounded-md flex items-center ${location.pathname === '/dashboard' ? 'bg-gray-500' : ''}`} ><GoHomeFill className='text-xl me-3' />Home</Link>

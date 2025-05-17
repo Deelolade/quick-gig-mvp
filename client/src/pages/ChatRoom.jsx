@@ -113,14 +113,14 @@ const ChatRoom = () => {
                                     </div>
                                     </div>
                                     { message.senderId._id === currentUser._id &&
-                                        <img src={message.senderId.profilePicture} alt="" className={` ms-2 w-12 h-12 rounded-full me-3`} />
+                                        <img src={message.senderId.profilePicture} alt="" className={`hidden ms-2 w-12 h-12 rounded-full me-3`} />
                                     }
                                 <div ref={messagesEndRef} />
                             </div>
                         ))}
                     </div>
                     <div className="h-[8vh] rounded-lg bg-green-500 w-[100%] px-5  flex justify-between items-center">
-                        <textarea type="text" id="content" value={messageData.text} name='content' onChange={(e) => setMessageData({ ...messageData, text: e.target.value })} placeholder='Type a Message...' rows={1} className='py-3 px-3 w-[90%] outline-none bg-green-500 text-white placeholder-white break-words overflow-auto ' onKeyDown={(e) => { e.key === "Enter" && sendMessage() }}></textarea>
+                        <textarea type="text"  id="content" value={messageData.text} name='content' onChange={(e) => setMessageData({ ...messageData, text: e.target.value })} placeholder='Type a Message...' rows={1} className='py-3 px-3 w-[90%] outline-none bg-green-500 text-white placeholder-white break-words overflow-auto ' onKeyDown={(e) => { e.key === "Enter" && sendMessage() }}></textarea>
                         <div className="p-3 hover:bg-green-400 rounded-lg">
                             <IoSendSharp className='text-2xl text-white' onClick={sendMessage} />
                         </div>

@@ -76,11 +76,11 @@ const BrowseFreelancers = () => {
             <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Freelancer</button>
           </div>
         </nav>
-        <section className='top-[8vh] relative p-8 pb-20  bg-gray-100 grid-cols-1 md:grid-cols-2 grid lg:grid-cols-4 mx-auto  '>
+        <section className='top-[8vh] relative p-8 pb-20  bg-gray-100 grid-cols-1 md:grid-cols-2 grid lg:grid-cols-3 2xl:grid-cols-4 mx-auto  '>
           {
             freelancer.map((user, idx) => {
               return (
-                <div className="w-full md:w-[350px] bg-white my-4 shadow-md border border-gray-200 rounded-2xl p-4 transition transform hover:scale-105 hover:shadow-xl" key={idx}>
+                <div className="w-full md:w-[350px]  bg-white my-4 shadow-md border border-gray-200 rounded-2xl p-4 transition transform hover:scale-105 hover:shadow-xl" key={idx}>
                   <img src={user.profilePicture} alt="profile" className="w-full h-48 object-cover rounded-xl" />
                   <div className="mt-4">
                     <h1 className="text-xl font-semibold">{user.fullName}</h1>
