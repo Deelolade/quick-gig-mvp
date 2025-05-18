@@ -16,6 +16,7 @@ const BrowseGigs = () => {
   const [selectedJob, setSelectedJob] = useState(null); // <-- store clicked job
   const [gigData, setGigData] = useState({})
   const {currentUser }= useSelector(state=> state.user)
+  const API_URL = import.meta.env.VITE_API_BASE_URL
 
   const handleChange =(e)=>{
     setGigData((prev)=>({...prev,[e.target.name]:e.target.value}))
@@ -28,7 +29,7 @@ const BrowseGigs = () => {
   const handleSubmit = async () => {
    try {
     setIsOpen(false);
-    const res = await axios.post(`http://localhost:5500/api/proposals/${currentUser._id}`, combinedData ,
+    const res = await axios.post(`${API_URL}/api/proposals/${currentUser._id}`, combinedData ,
       {withCredentials:true} 
     ) 
     toast.success("Proposal sent successfully")
@@ -40,7 +41,7 @@ const BrowseGigs = () => {
   useEffect(() => {
     const getGigs = async () => {
       try {
-        const res = await axios.get("http://localhost:5500/api/gigs",
+        const res = await axios.get(`${API_URL}/api/gigs`,
           { withCredentials: true }
         )
         setGigs(res.data.Gigs)

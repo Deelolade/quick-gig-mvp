@@ -7,13 +7,13 @@ import BottomMenu from './BottomMenu'
 
 
 const FreelancersDashboard = () => {
+  const API_URL = import.meta.env.VITE_API_BASE_URL
   const [proposalCount, setProposalCount] = useState(0)
-
   const { currentUser } = useSelector(state => state.user)
   useEffect(() => {
     const fetchProposalCount = async () => {
       try {
-        const res = await axios.get(`http://localhost:5500/api/freelancer/proposals/${currentUser._id}`, {
+        const res = await axios.get(`${ API_URL}/api/freelancer/proposals/${currentUser._id}`, {
           withCredentials: true,
         })
         setProposalCount(res.data.count)
@@ -29,6 +29,7 @@ const FreelancersDashboard = () => {
     }
     fetchProposalCount();
   }, [])
+  console.log("API_URL:", API_URL);
   return (
     <>
       <div className='flex justify-between'>

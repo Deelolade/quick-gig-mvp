@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom'
 const ChatRoom = () => {
     const messagesEndRef = useRef(null);
     const socket = useRef();
+    const API_URL = import.meta.env.VITE_API_BASE_URL
     const [messages, setMessages] = useState([])
     const [messageData, setMessageData] = useState({
         text: "",
@@ -28,7 +29,7 @@ const ChatRoom = () => {
         if (!currentUser?._id) return;
 
         if (!socket.current) {
-            socket.current = io('http://localhost:5500', { withCredentials: true });
+            socket.current = io(`${API_URL}`, { withCredentials: true });
         }
         socket.current.on("chatRoom_request", (chatData) => {
             setMessages((prev) => [...prev, chatData]);
@@ -45,7 +46,7 @@ const ChatRoom = () => {
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const res = await axios.get("http://localhost:5500/chatrooms")
+                const res = await axios.get(`${API_URL}/chatrooms`)
                 setMessages(res.data.message)
                 localStorage.setItem("cached_ChatRoom", JSON.stringify(res.data.message))
                 console.log(res.data.message)

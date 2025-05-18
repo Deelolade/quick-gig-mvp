@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const SignUpHook = () => {
+    const API_URL = import.meta.env.VITE_API_BASE_URL
     const [successMessage, setSuccessMessage] = useState(false);
     
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ const SignUpHook = () => {
     )}
     return useMutation({
         mutationFn: async (userData) => {
-            const response = await axios.post("http://localhost:5500/api/auth/signup",
+            const response = await axios.post(`${API_URL}/api/auth/signup`,
                 {...userData,role: selectedRole,},
                 { headers: { "Content-Type": "application/json",}}
             )

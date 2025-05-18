@@ -12,6 +12,7 @@ const Messages = () => {
   const dispatch = useDispatch()
   const location = useLocation()
   const socket = useRef();
+  const API_URL = import.meta.env.VITE_API_BASE_URL
   const { selectedUsers } = useSelector(state => state.chat);
   const selectedUser = useSelector(state => state.chat.selectedUser);
   const { currentUser } = useSelector(state => state.user);
@@ -19,15 +20,15 @@ const Messages = () => {
   const [filteredUsers, setFilteredUsers] = useState(selectedUsers);
   const [messages, setMessages] = useState([])
   const [messageData, setMessageData] = useState({
-      content: "",
-      senderId:"",
-      receiverId:""
-    })
-      const messagesEndRef = useRef(null);
-    
+    content: "",
+    senderId: "",
+    receiverId: ""
+  })
+  const messagesEndRef = useRef(null);
+
   useEffect(() => {
     if (!socket.current) {
-      socket.current = io("http://localhost:5500", { withCredentials: true });
+      socket.current = io(`${API_URL}`, { withCredentials: true });
     }
   }, []);
   const handleChange = (e) => {
@@ -56,23 +57,23 @@ const Messages = () => {
       receiverId: selectedUser._id,
       content,
       room: selectedUser._id,
-      createdAt: new Date().toISOString(), 
+      createdAt: new Date().toISOString(),
     }
     socket.current.emit("send_message", data)
     console.log(data.room)
-    setMessages((prev)=> [...prev, data])
+    setMessages((prev) => [...prev, data])
     setMessageData({ content: "" })
   }
-// Listen for incoming messages
-useEffect(() => {
-  socket.current.on('receive_message', (message) => {
-    setMessages((prevMessages) => [...prevMessages, message]);
-  });
+  // Listen for incoming messages
+  useEffect(() => {
+    socket.current.on('receive_message', (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
 
-  return () => {
-    socket.current.off('receive_message'); // Clean up when component unmounts
-  };
-}, []);
+    return () => {
+      socket.current.off('receive_message'); // Clean up when component unmounts
+    };
+  }, []);
 
   useEffect(() => {
     const searchFilter = () => {
@@ -81,32 +82,34 @@ useEffect(() => {
     }
     searchFilter()
   }, [searchedValue, selectedUsers])
-  useEffect(()=>{
-      const fetchMessages = async()=>{
-        try {
-          const res =await  axios.get("http://localhost:5500/messages",{
-            params:{userA: currentUser._id,
-              userB: selectedUser._id
-            } ,withCredentials:true })
-            setMessages(res.data.messages)
-            localStorage.setItem("cached_messages", JSON.stringify(res.data.messages))
-            console.log("API Response:", res);
-            console.log( "shows", res.data.messages)
-        } catch (error) {
-          const cacheData = localStorage.getItem("cached_messages")
-          if(cacheData){
-            setMessages(JSON.parse(cacheData))
-          }
-          console.log(error)
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/messages`, {
+          params: {
+            userA: currentUser._id,
+            userB: selectedUser._id
+          }, withCredentials: true
+        })
+        setMessages(res.data.messages)
+        localStorage.setItem("cached_messages", JSON.stringify(res.data.messages))
+        console.log("API Response:", res);
+        console.log("shows", res.data.messages)
+      } catch (error) {
+        const cacheData = localStorage.getItem("cached_messages")
+        if (cacheData) {
+          setMessages(JSON.parse(cacheData))
         }
+        console.log(error)
       }
-      if(currentUser && selectedUser){
-      fetchMessages(); 
-      }
-    },[currentUser, selectedUser])
-    useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+    }
+    if (currentUser && selectedUser) {
+      fetchMessages();
+    }
+  }, [currentUser, selectedUser])
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
   return (
     <div className='flex '>
       <aside className='w-[15vw] md:w-[10vw] lg:w-[15vw] h-screen overflow-y-auto bg-green-500  px-2 text-white  py-4 flex flex-col justify-between shadow-md'>
@@ -140,7 +143,7 @@ useEffect(() => {
         {selectedUser ? (
           <div className="flex flex-col h-[92vh] px-3 md:py-5 max-w-4xl justify-center items-center w-[100%] mx-auto relative top-[8vh]">
             <div className='max-w-4xl  h-[84vh]  w-[100%] overflow-y-auto overflow-x-hidden flex flex-col  px-2 py-4 space-x-4   '>
-              {messages&& messages.map((message, idx) => (
+              {messages && messages.map((message, idx) => (
                 <div key={idx} className={`flex ${message.senderId === currentUser._id ? 'justify-end' : 'items-start'} my-2`}>
                   <div
                     className={`px-4 py-3 rounded-2xl max-w-[75%] break-words ${message.senderId === currentUser._id ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-900'}`}
@@ -153,7 +156,7 @@ useEffect(() => {
               ))}
             </div>
             <div className="h-[8vh] rounded-lg bg-green-500 w-[100%] px-5 flex justify-between items-center">
-              <textarea type="text" id="content" name='content'onKeyDown={(e) => { e.key === "Enter" && sendMessage() }}  onChange={(e) => setMessageData({ ...messageData, content: e.target.value })} value={messageData.content} placeholder='Type a Message...' rows={1} className='py-3 px-3 w-[90%] outline-none bg-green-500 text-white placeholder-white break-words overflow-auto ' ></textarea>
+              <textarea type="text" id="content" name='content' onKeyDown={(e) => { e.key === "Enter" && sendMessage() }} onChange={(e) => setMessageData({ ...messageData, content: e.target.value })} value={messageData.content} placeholder='Type a Message...' rows={1} className='py-3 px-3 w-[90%] outline-none bg-green-500 text-white placeholder-white break-words overflow-auto ' ></textarea>
               <div className=" p-2 md:p-3 hover:bg-green-400 rounded-lg">
                 <IoSendSharp className=' text-lg md:text-2xl text-white' onClick={sendMessage} />
               </div>

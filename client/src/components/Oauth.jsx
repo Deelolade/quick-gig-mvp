@@ -13,6 +13,7 @@ const Oauth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = getAuth(app)
+  const API_URL = import.meta.env.VITE_API_BASE_URL
   const [successMessage, setSuccessMessage] = useState(false);
   const selectedRole = useSelector((state)=> state.user.selectedRole);
 
@@ -22,7 +23,7 @@ const Oauth = () => {
     try {
       dispatch(signInStart());
       const resultFromGoogle = await signInWithPopup(auth, provider);
-      const res = await fetch("http://localhost:5500/api/auth/google", {
+      const res = await fetch(`${API_URL}/api/auth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

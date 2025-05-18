@@ -12,6 +12,7 @@ import BottomMenu from './BottomMenu';
 const ClientProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const API_URL = import.meta.env.VITE_API_BASE_URL
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [socialLinks, setSocialLinks] = useState({
@@ -82,7 +83,7 @@ const removeSkill = (indexToRemove) => {
     }
     try {
       dispatch(updateStart())
-      const res = await axios.put(`http://localhost:5500/api/auth/update/${currentUser._id}`, combinedFormData,
+      const res = await axios.put(`${API_URL}/api/auth/update/${currentUser._id}`, combinedFormData,
         { withCredentials: true }
       )
       dispatch(updateSuccess(res.data));

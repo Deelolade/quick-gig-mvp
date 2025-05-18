@@ -11,6 +11,7 @@ import BottomMenu from './BottomMenu';
 const ClientProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch(); 
+  const API_URL = import.meta.env.VITE_API_BASE_URL
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [formData, setFormData] = useState({})
@@ -67,7 +68,7 @@ const ClientProfile = () => {
   }
     try {
       dispatch(updateStart())
-        const res = await axios.put(`http://localhost:5500/api/auth/update/${currentUser._id}`, combinedFormData,
+        const res = await axios.put(`${API_URL}/api/auth/update/${currentUser._id}`, combinedFormData,
           {withCredentials: true}
         )
         dispatch(updateSuccess(res.data));

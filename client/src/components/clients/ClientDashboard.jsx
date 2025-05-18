@@ -8,12 +8,13 @@ import { Link } from 'react-router-dom'
 
 const FreelancersDashboard = () => {
   const { currentUser } = useSelector(state => state.user)
-
+  const API_URL = import.meta.env.VITE_API_BASE_URL
+  
   const [proposalCount, setProposalCount] = useState(0)
   useEffect(() => {
     const fetchProposalCount = async () => {
       try {
-        const res = await axios.get(`http://localhost:5500/api/client/proposals/${currentUser._id}`, {
+        const res = await axios.get(`${API_URL}/api/client/proposals/${currentUser._id}`, {
           withCredentials: true,
         })
         setProposalCount(res.data.proposalCount)
