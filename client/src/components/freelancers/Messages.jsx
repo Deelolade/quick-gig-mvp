@@ -9,6 +9,7 @@ import { addUser, setSelectedUser } from '../../redux/chat/chatSlice';
 
 const Messages = () => {
   const dispatch = useDispatch()
+  const API_URL = import.meta.env.VITE_API_BASE_URL
   const [showModal, setShowModal] = useState(false)
   const [incomingChat, setIncomingChat] = useState(null)
   const [searchedValue, setSearchedValue] = useState('')
@@ -35,7 +36,7 @@ const Messages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await axios.get("http://localhost:5500/messages", {
+        const res = await axios.get(`${API_URL}/messages`, {
           params: {
             userA: currentUser._id,
             userB: selectedUser._id
@@ -68,7 +69,7 @@ useEffect(() => {
     if (!currentUser?._id) return;
 
     if (!socket.current) {
-      socket.current = io('http://localhost:5500', { withCredentials: true });
+      socket.current = io(`${API_URL}`, { withCredentials: true });
     }
     socket.current.on("incoming_chat_request", (clientData) => {
       setIncomingChat(clientData);

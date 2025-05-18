@@ -4,7 +4,9 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import BottomMenu from './BottomMenu';
 
+
 const Proposals = () => {
+  const API_URL = import.meta.env.VITE_API_BASE_URL
   const [proposals, setProposals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,11 +20,11 @@ const Proposals = () => {
     const fetchProposals = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5500/api/proposals/${currentUser._id}`,
+          `${API_URL}/api/proposals/${currentUser._id}`,
           { withCredentials: true }
         );
         setProposals(res.data);
-        console.log(res);
+        console.log(res.data);
         localStorage.setItem("cached_proposal", JSON.stringify(res.data))
       } catch (err) {
         setError("Failed to load proposals");

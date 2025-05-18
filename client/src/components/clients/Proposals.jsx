@@ -12,14 +12,14 @@ import BottomMenu from './BottomMenu';
 const Proposals = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { gigId } = useParams();
+  const API_URL = import.meta.env.VITE_API_BASE_URL
   const [proposals, setProposals] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [sentInvites, setSentInvites] = useState({});
   const { currentUser } = useSelector(state => state.user)
-  const socket = io('http://localhost:5500', {withCredentials:true})
+  const socket = io(`${API_URL}`, {withCredentials:true})
 
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Proposals = () => {
       setLoading(true)
       try {
         console.log(currentUser)
-        const res = await axios.get(`http://localhost:5500/api/proposals/client/${currentUser._id}`, {
+        const res = await axios.get(`${API_URL}/api/proposals/client/${currentUser._id}`, {
           withCredentials: true,
         });
         setProposals(res.data);

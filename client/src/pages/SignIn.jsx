@@ -12,6 +12,7 @@ import { signInFailure, signInSuccess, signInStart } from "../redux/user/userSli
 const SignIn = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const API_URL = import.meta.env.VITE_API_BASE_URL
     const [passwordType, setPasswordType] = useState("password");
     const [passwordIcon, setPasswordIcon] = useState(FaEye);
     const [errors, setErrors] = useState({});
@@ -22,7 +23,6 @@ const SignIn = () => {
     });
     const selectedRole = useSelector((state) => state.user.selectedRole)
     // Handle form input changes
-
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,7 +60,7 @@ const SignIn = () => {
         }
         try {
             dispatch(signInStart());
-            const res = await fetch("http://localhost:5500/api/auth/signin", {
+            const res = await fetch(`${API_URL}/api/auth/signin`, {
 
                 method: "POST",
                 headers: {

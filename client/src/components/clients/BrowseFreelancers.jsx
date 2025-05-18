@@ -12,18 +12,19 @@ import BottomMenu from './BottomMenu'
 const BrowseFreelancers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_BASE_URL
   const [freelancer, setFreelancer] = useState([])
   const [isOpen, setIsOpen] = useState(false)  
   const [loading, setLoading] = useState(false);
   const [sentInvites, setSentInvites] = useState({});
   const { currentUser } = useSelector(state => state.user);
   const [selectedFreelancer, setSelectedFreelancer] = useState(null); // <-- store clicked job
-  const socket = io('http://localhost:5500', {withCredentials:true})
+  const socket = io(`${API_URL}`, {withCredentials:true})
   useEffect(() => {
     const getFreelancers = async () => {
       setLoading(true)
       try {
-        const res = await axios.get("http://localhost:5500/api/users/freelancer-dashboard",
+        const res = await axios.get(`${API_URL}/api/users/freelancer-dashboard`,
           { withCredentials: true }
         )
         setFreelancer(res.data.freelancers)

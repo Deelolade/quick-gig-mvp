@@ -9,6 +9,7 @@ import BottomMenu from './BottomMenu';
 
 const PostGig = () => {
   const navigate =useNavigate();
+  const API_URL = import.meta.env.VITE_API_BASE_URL
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -28,7 +29,7 @@ const PostGig = () => {
     try {
       // Send POST request with formData
       const res = await axios.post(
-        "http://localhost:5500/api/gigs",
+        `${API_URL}/api/gigs`,
         formData,
         {
           headers: {
