@@ -27,7 +27,7 @@ const BottomMenu = () => {
                             </p>
                         </Link>
                         <Link to='/proposals' className={`text-[12px]  md:text-[15px]  font-bold  text-center flex flex-col justify-center items-center`}>
-                            <RiFileList2Fill className={`text-5xl   my-1 rounded-md me-3   hover:bg-gray-500 px-2 ${location.pathname === '/proposals' ? 'bg-gray-500' : ''}`} />
+                            <RiFileList2Fill className={`text-5xl  my-1 rounded-md me-3   hover:bg-gray-500 px-2 ${location.pathname === '/proposals' ? 'bg-gray-500' : ''}`} />
                             <p className='hidden md:block' >
                                 Proposals
                             </p>
