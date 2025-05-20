@@ -72,7 +72,7 @@ const ClientProfile = () => {
           {withCredentials: true}
         )
         dispatch(updateSuccess(res.data));
-      toast.success(res?.message  || "User's Data successfully 🎉!!");
+      toast.success(res?.message  || "User's Data successfully updated🎉!!");
         console.log("User updated:", res.data);
   } catch (error) {
     toast.error(error.response?.data?.message || "Something went wrong")
