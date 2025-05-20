@@ -84,7 +84,7 @@ const ChatRoom = () => {
             {
                 currentUser.role === "client" ? <ClientSideBar /> : <FreelancerSideBar />
             }
-            <div className="dashboard lg:w-[85%] bg-gray-100 h-[auto] md:pb-20 ">
+            <div className="dashboard lg:w-[85%] w-full bg-gray-100 h-[auto] md:pb-20 ">
                 <nav className='h-[8vh] lg:w-[85vw] w-full py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
                     <div className=" flex  items-center space-x-4">
                     <Link to='/dashboard' className='p-3 hover:bg-green-300 hover:text-white rounded-lg lg:hidden'>
@@ -93,7 +93,7 @@ const ChatRoom = () => {
                     <h1 className='text-xl font-semibold'>Chat Rooms</h1>
                     </div>
                     <div className="">
-                        <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a Client</button>
+                        <button className='px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg'>Refer a {currentUser.role === "client"? "Client" :"Freelancer"}</button>
                     </div>
                 </nav>
                 <div className="flex flex-col  h-[92vh] py-5 bg-gray-100 max-w-4xl justify-center items-center  w-[90%] lg:w-[100%] mx-auto relative top-[8vh]">

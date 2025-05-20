@@ -21,14 +21,13 @@ app.use(cors({
 }));
 app.use(cookieParser());
 app.use(express.json());
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.ARCJET_ENV !== 'development') {
     app.use(arcjetMiddleware); // or however Arcjet is integrated
 }
 
 
 // app.use()
 // app.use(cors())
-
 
 const server = http.createServer(app)
 const io = new Server(server, {

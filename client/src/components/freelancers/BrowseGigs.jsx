@@ -63,7 +63,7 @@ const BrowseGigs = () => {
       <div className="dashboard lg:w-[85vw] bg-gray-100 min-h-screen">
           <nav className='h-[8vh] w-full lg:w-[85vw] py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20'>
             <h1 className='md:text-xl font-semibold'>Browse Gigs</h1>
-            <button className='px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition'>Refer a Freelancer</button>
+            <button className='px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition'>Refer a Client</button>
           </nav>
         <section className='top-[8vh] relative p-8  bg-gray-100 mb-12 '>
           <div className=" mb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-auto">
