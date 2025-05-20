@@ -48,7 +48,7 @@ const Proposals = () => {
       <div className="dashboard lg:w-[85%] bg-gray-100 min-h-screen">
           <nav className='h-[8vh] w-full lg:w-[85vw] py-4 px-5 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20'>
             <h1 className='md:text-xl font-semibold'>Proposals</h1>
-            <button className='px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition'>Refer a Freelancer</button>
+            <button className='px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition'>Refer a Client</button>
           </nav>
         <div className="max-w-4xl mx-auto p-4 top-[10vh] relative ">
           <h1 className="text-3xl font-semibold mb-4">Your Sent Proposals</h1>

@@ -110,7 +110,7 @@ const removeSkill = (indexToRemove) => {
       <FreelancerSideBar />
       <div className="dashboard w-full lg:w-[85%]  min-h-screen bg-gray-100 ">
         <nav className='h-[8vh] lg:w-[85vw] w-full px-5  py-4 md:px-12 flex justify-between items-center bg-white shadow-md fixed z-20' >
-          <h1 className='text-3xl font-semibold'>Edit Profile</h1>
+          <h1 className='md:text-xl font-semibold'>Edit Profile</h1>
           <div className="">
             <button onClick={signOut} className='px-3 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg'>Sign Out</button>
           </div>
