@@ -9,15 +9,16 @@ userRouter.put("/make-admin/:userId", authenticateUser, isAdmin, makeAdmin);
 
 userRouter.get("/freelancer/:userId", authenticateUser,isFreelancer, getFreelancer)
 
+// get freelancers for clients
+userRouter.get('/freelancers',authenticateUser,getFreelancers)
 
 
 // get admin dashboard
 userRouter.get('/admin-dashboard',authenticateUser, isAdmin, (req, res) =>{
     res.json({message: "Welcome to the Admin dashboard"})
 })
-// get freelancers dashboard
-userRouter.get('/freelancer-dashboard',authenticateUser,getFreelancers)
 // get clients dashboard
+
 userRouter.get("/client-dashboard", authenticateUser, isClient, (req, res)=>{
     res.json({message: "Welcome to the client dashboard"})
 })
