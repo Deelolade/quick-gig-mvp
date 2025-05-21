@@ -42,18 +42,22 @@ export const isClient = (req, res, next) => {
     next();
 }
 
-export const authenticateUser = async(req, res, next) => {
+export const authenticateUser = async (req, res, next) => {
     try {
         const token = req.cookies.access_token || req.headers.authorization?.split(" ")[1]; // Extract token from headers
         if (!token) {
             return res.status(401).json({ message: "No token provided. Unauthorized !" });
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET); //extract user info /data from token 
-        const user =  await User.findById(decoded.id);
+        const user = await User.findById(decoded.id);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        req.user = user; // Attach user info to req.user
+        req.user = {
+            id: user._id.toString(),
+            role: user.role,
+            email: user.email,
+        }; // Attach user info to req.user
         next(); // Continue to next middleware
     } catch (error) {
         return res.status(401).json({ message: "Invalid or expired token !!" });
