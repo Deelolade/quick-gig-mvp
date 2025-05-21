@@ -11,9 +11,13 @@ import { Server } from "socket.io";
 import { socketHandler } from './socket.js';
 import messageRouter from './routes/message.route.js';
 import { arcjetMiddleware } from './utils/arcjet.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
 const port = process.env.PORT || 5500;
 
 const app = express();
+app.set('trust proxy', true);
 
 app.use(cors({
     origin: [process.env.FRONTEND_URL ,"http://localhost:5173"]  ,
