@@ -23,6 +23,11 @@ app.use(cors({
     origin: ["https://quick-gig-mvp.vercel.app","http://localhost:5173"]  ,
     credentials: true
 }));
+// ✅ Add this for preflight CORS requests to succeed
+app.options('*', cors({
+    origin: ["https://quick-gig-mvp.vercel.app", "http://localhost:5173"],
+    credentials: true
+}));
 app.use(cookieParser());
 app.use(express.json());
 if (process.env.ARCJET_ENV !== 'development') {
