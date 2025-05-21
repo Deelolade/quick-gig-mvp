@@ -24,7 +24,7 @@ const BrowseFreelancers = () => {
     const getFreelancers = async () => {
       setLoading(true)
       try {
-        const res = await axios.get(`${API_URL}/api/users/freelancer-dashboard`,
+        const res = await axios.get(`${API_URL}/api/users/freelancers`,
           { withCredentials: true }
         )
         setFreelancer(res.data.freelancers)
