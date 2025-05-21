@@ -30,13 +30,11 @@ app.options('*', cors({
 }));
 app.use(cookieParser());
 app.use(express.json());
+
+
 if (process.env.ARCJET_ENV !== 'development') {
-    app.use(arcjetMiddleware); // or however Arcjet is integrated
+    app.use(arcjetMiddleware);
 }
-
-
-// app.use()
-// app.use(cors())
 
 const server = http.createServer(app)
 const io = new Server(server, {
@@ -67,3 +65,11 @@ app.use("/", messageRouter)
 server.listen(port, () => {
     console.log(`server is running on  http://localhost:${port}`)
 })
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
