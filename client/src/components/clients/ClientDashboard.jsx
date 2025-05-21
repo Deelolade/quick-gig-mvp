@@ -6,7 +6,7 @@ import BottomMenu from './BottomMenu'
 import { Link } from 'react-router-dom'
 
 
-const FreelancersDashboard = () => {
+const ClientDashboard = () => {
   const { currentUser } = useSelector(state => state.user)
   const API_URL = import.meta.env.VITE_API_BASE_URL
   
@@ -114,4 +114,4 @@ const FreelancersDashboard = () => {
   )
 }
 
-export default FreelancersDashboard
+export default ClientDashboard
