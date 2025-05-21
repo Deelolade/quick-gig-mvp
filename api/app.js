@@ -13,6 +13,8 @@ import messageRouter from './routes/message.route.js';
 import { arcjetMiddleware } from './utils/arcjet.js';
 import dotenv from 'dotenv';
 dotenv.config();
+console.log("🌍 FRONTEND_URL:", process.env.FRONTEND_URL);
+
 
 const port = process.env.PORT || 5500;
 
