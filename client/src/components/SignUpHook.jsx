@@ -34,7 +34,9 @@ const SignUpHook = () => {
         mutationFn: async (userData) => {
             const response = await axios.post(`${API_URL}/api/auth/signup`,
                 {...userData,role: selectedRole,},
-                { headers: { "Content-Type": "application/json",}}
+                { headers: { "Content-Type": "application/json",},
+            withCredentials: true,
+        }
             )
             console.log("Backend Response:", response.data);
             return response.data;

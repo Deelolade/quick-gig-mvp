@@ -18,6 +18,7 @@ const FreelancersDashboard = () => {
           withCredentials: true,
         })
         setProposalCount(res.data.proposalCount)
+        console.log(res.data.proposalCount)
         localStorage.setItem("total_proposal_count", JSON.stringify(res.data.proposalCount))
         console.log(res.data)
       } catch (error) {
