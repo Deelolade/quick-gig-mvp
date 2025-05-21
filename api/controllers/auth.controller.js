@@ -138,7 +138,12 @@ export const signIn = async (req, res, next) => {
         console.log("Generated Token:", token);
 
         res.status(200).cookie("access_token", token,
-            { httpOnly: true }
+            {
+                httpOnly: true,
+                secure: true,       // must be true for HTTPS
+                sameSite: 'none',   // needed for cross-origin requests
+                maxAge: 7 * 24 * 60 * 60 * 1000 // optional - cookie expiration in ms
+            }
         ).json({ message: "Login successful", token, user: rest });
     } catch (err) {
         return next(err)
@@ -174,6 +179,9 @@ export const google = async (req, res, next) => {
             const { password, ...rest } = newUser._doc;
             res.status(200).cookie("access_token", token, {
                 httpOnly: true,
+                secure: true,       // must be true for HTTPS
+                sameSite: 'none',   // needed for cross-origin requests
+                maxAge: 7 * 24 * 60 * 60 * 1000 // optional - cookie expiration in ms
             })
                 .json(rest)
         }
