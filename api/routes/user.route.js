@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authenticateUser, isAdmin, isClient, isFreelancer,  } from "../utils/authMiddleware.js";
-import { makeAdmin,getFreelancers, getFreelancer } from "../controllers/user.controller.js";
+import { makeAdmin,getFreelancers, getFreelancer, updateUserRole } from "../controllers/user.controller.js";
 const userRouter = Router();
 
 
@@ -11,6 +11,9 @@ userRouter.get("/freelancer/:userId", authenticateUser,isFreelancer, getFreelanc
 
 // get freelancers for clients
 userRouter.get('/freelancers',authenticateUser,getFreelancers)
+
+// updates user role when signing in
+userRouter.patch('/role/:userId',authenticateUser,updateUserRole)
 
 
 // get admin dashboard

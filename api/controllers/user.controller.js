@@ -48,3 +48,23 @@ export const getFreelancer = async(req, res, next)=>{
         next(error)
     }
 }
+export const updateUserRole = async(req, res, next)=>{
+    try {
+        const {role} =req.body;
+        if(!role){
+            return res.status(400).json({success:false, message:"Role is required."})
+        }
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user.id,
+            {role},
+        {new:true})
+            res.status(200).json({
+                success:true,
+                message:"Role updated successfully",
+                role:updatedUser.role
+            })
+    } catch (err) {
+        next(err)
+    }
+
+}

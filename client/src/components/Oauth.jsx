@@ -5,6 +5,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from "react-toastify";
+import axios from 'axios';
 import "react-toastify/dist/ReactToastify.css"; 
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice.js";
 
@@ -17,47 +18,87 @@ const Oauth = () => {
   const [successMessage, setSuccessMessage] = useState(false);
   const selectedRole = useSelector((state)=> state.user.selectedRole);
 
-  const handleGoogleclick = async () => {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' })
-    try {
-      dispatch(signInStart());
-      const resultFromGoogle = await signInWithPopup(auth, provider);
-      const res = await fetch(`${API_URL}/api/auth/google`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userName: resultFromGoogle.user.displayName.toLowerCase().replace(/\s+/g, "") + Math.random().toString(36).slice(-4),
-          fullName: resultFromGoogle.user.displayName,
-          email: resultFromGoogle.user.email,
-          photo: resultFromGoogle.user.photoURL,
-          role: selectedRole,
-        }),
-        credentials: 'include',
-      })
-      const data = await res.json();
-      // console.log(data)
-      if (data.success === false) {
-        dispatch(signInFailure(error.message));
-        const errorMessage = err.response?.data?.message || "Signup failed. Please try again.";
-        toast.error(errorMessage);
-      }
-      if(!selectedRole){
-        navigate("/role")
-        toast.error("Please select a role before signing up !!")
-        return;
-      }
-      if (res.ok) {
-        dispatch(signInSuccess(data));
-        toast.success(data?.message  || "Signed in successfully 🎉!!");
-        setSuccessMessage(true)
-        setTimeout(() => navigate("/dashboard"), 2000);
-      }
-    } catch (error) {
-      dispatch(signInFailure(error.message));
+ const handleGoogleclick = async () => {
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
 
+  try {
+    // 1. Start the loading state
+    dispatch(signInStart());
+
+    // 2. Firebase popup
+    const resultFromGoogle = await signInWithPopup(auth, provider);
+
+    // 3. Check if role is selected
+    if (!selectedRole) {
+      toast.error("Please select a role before signing up!");
+      navigate("/role");
+      return;
     }
+
+    // 4. POST to backend with Google user data
+    const res = await fetch(`${API_URL}/api/auth/google`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userName: resultFromGoogle.user.displayName
+          .toLowerCase()
+          .replace(/\s+/g, "") + Math.random().toString(36).slice(-4),
+        fullName: resultFromGoogle.user.displayName,
+        email: resultFromGoogle.user.email,
+        photo: resultFromGoogle.user.photoURL,
+        role: selectedRole,
+      }),
+      credentials: "include",
+    });
+
+    const data = await res.json();
+
+    if (data.success === false) {
+      dispatch(signInFailure(data.message));
+      toast.error(data.message || "Signup failed. Please try again.");
+      return;
+    }
+
+    // 5. If user was created but role is still missing in DB, PATCH it
+    if (!data.role && selectedRole) {
+      try {
+        const patchRes = await fetch(`${API_URL}/api/users/role/${data._id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ role: selectedRole }),
+        });
+
+        const updatedUser = await patchRes.json();
+        if (patchRes.ok) {
+          dispatch(signInSuccess(updatedUser));
+        } else {
+          toast.error("Failed to update user role.");
+        }
+      } catch (patchError) {
+        console.error("PATCH error:", patchError);
+        toast.error("Failed to update role.");
+      }
+    } else {
+      // 6. User already had role, just log them in
+      dispatch(signInSuccess(data));
+    }
+
+    // 7. Navigate to dashboard
+    toast.success(data?.message || "Signed in successfully 🎉!!");
+    setSuccessMessage(true);
+    setTimeout(() => navigate("/dashboard"), 2000);
+
+  } catch (error) {
+    dispatch(signInFailure(error.message));
+    toast.error("Google sign-in failed. Please try again.");
+    console.error("Google sign-in error:", error);
   }
+};
+
   return (
     <>
     <button className="w-[100%] md:w-[48%]  flex items-center justify-center mt-3 md:mt-0 py-2 md:py-2 px-3 border border-black rounded-full text-[14px]"
