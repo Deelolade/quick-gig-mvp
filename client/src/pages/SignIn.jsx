@@ -152,7 +152,6 @@ const SignIn = () => {
                                 onChange={handleChange}
                                 placeholder="Enter password"
                                 className="outline-none w-[90%]"
-                                autocomplete="current-password"
                             />
                             <button
                                 className="password-icon"
