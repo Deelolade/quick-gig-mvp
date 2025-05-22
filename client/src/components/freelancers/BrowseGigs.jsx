@@ -35,8 +35,8 @@ const BrowseGigs = () => {
     toast.success("Proposal sent successfully")
     return res.data.Gigs
    } catch (error) {
-    toast.error("Submission failed:", error?.response?.data?.message || error.message)
-   }
+    toast.error( error?.response?.data?.message )
+  }
   };
   useEffect(() => {
     const getGigs = async () => {
