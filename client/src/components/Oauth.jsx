@@ -42,6 +42,11 @@ const Oauth = () => {
         const errorMessage = err.response?.data?.message || "Signup failed. Please try again.";
         toast.error(errorMessage);
       }
+      if(!selectedRole){
+        navigate("/role")
+        toast.error("Please select a role before signing up !!")
+        return;
+      }
       if (res.ok) {
         dispatch(signInSuccess(data));
         toast.success(data?.message  || "Signed in successfully 🎉!!");

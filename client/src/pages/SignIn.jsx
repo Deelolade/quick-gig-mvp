@@ -27,8 +27,16 @@ const SignIn = () => {
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+    // set form to empty on reload
+    useEffect(() => {
+  setFormData({
+    email: '',
+    password: ''
+  });
+}, []);
 
-    const handlePasswordToggle = () => {
+    const handlePasswordToggle = (e) => {
+        e.preventDefault()
         if (passwordType === "password") {
             setPasswordType("text")
             setPasswordIcon(FaEyeSlash)
@@ -144,6 +152,7 @@ const SignIn = () => {
                                 onChange={handleChange}
                                 placeholder="Enter password"
                                 className="outline-none w-[90%]"
+                                autocomplete="current-password"
                             />
                             <button
                                 className="password-icon"
