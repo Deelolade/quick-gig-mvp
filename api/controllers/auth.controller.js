@@ -159,6 +159,9 @@ export const google = async (req, res, next) => {
             const { password, ...rest } = user._doc;
             res.status(200).cookie("access_token", token, {
                 httpOnly: true,
+                secure: true,       // must be true for HTTPS
+                sameSite: 'none',   // needed for cross-origin requests
+                maxAge: 7 * 24 * 60 * 60 * 1000 // optional - cookie expiration in ms
             }).json(rest)
         }
         else {

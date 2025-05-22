@@ -44,7 +44,7 @@ const Oauth = () => {
       }
       if (res.ok) {
         dispatch(signInSuccess(data));
-        toast.success(data?.message  || "Signed in successful 🎉!!");
+        toast.success(data?.message  || "Signed in successfully 🎉!!");
         setSuccessMessage(true)
         setTimeout(() => navigate("/dashboard"), 2000);
       }

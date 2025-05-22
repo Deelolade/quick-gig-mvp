@@ -49,6 +49,8 @@ const Messages = () => {
     });
     console.log("Client initiated chat with:", user._id);
   };
+  console.log(selectedUsers, "selected users")
+    console.log(currentUser, "current user")
 
   const sendMessage = async () => {
     const { content } = messageData;
@@ -125,7 +127,7 @@ const Messages = () => {
 
           {filteredUsers.length > 0 ? (filteredUsers.map((user, idx) => {
             return (
-              <ul key={idx} className='flex justify-center md:justify-start items-center my-2 bg-green-500 py-2 md:px-2 rounded-xl hover:bg-green-300 hover:text-green-700' onClick={() => handleClickedUser(user)} >
+              <ul key={idx} className='flex justify-center md:justify-start items-center my-2 bg-green-400 py-2 md:px-2 rounded-xl hover:bg-green-300 hover:text-green-700' onClick={() => handleClickedUser(user)} >
                 <img src={user.profilePicture} alt="" className=' w-8 h-8 md:w-12 md:h-12 rounded-full md:me-3' />
                 <li className='font-semibold text-lg hidden lg:block'>{user.userName}</li>
               </ul>
