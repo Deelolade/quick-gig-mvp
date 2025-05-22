@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { GiCancel } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
 import BottomMenu from './BottomMenu';
+import { resetChat } from '../../redux/chat/chatSlice';
 
 const ClientProfile = () => {
   const dispatch = useDispatch();
@@ -102,6 +103,7 @@ const removeSkill = (indexToRemove) => {
   }
   const signOut = ()=>{
       dispatch(logOut())
+      dispatch(resetChat())
       navigate("/")
     }
   return (

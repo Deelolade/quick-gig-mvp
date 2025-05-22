@@ -107,9 +107,12 @@ useEffect(() => {
 
     console.log("Client initiated chat with:", user._id);
   };
+  console.log(selectedUsers, "selected users")
+  console.log(chatUsers, "chatted users")
+  console.log(currentUser, "current user")
   useEffect(() => {
     const searchFilter = () => {
-      const searchUser = selectedUsers.filter(user => user.userName.toLowerCase().includes(searchedValue) || user.fullName === searchedValue)
+      const searchUser = selectedUsers?.filter(user => user.userName.toLowerCase().includes(searchedValue) || user.fullName === searchedValue)
       setFilteredUsers(searchUser)
     }
     searchFilter()

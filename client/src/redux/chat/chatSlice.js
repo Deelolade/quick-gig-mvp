@@ -21,7 +21,11 @@ const chatSlice = createSlice({
         setSelectedUser :(state, action) =>{
             state.selectedUser = action.payload;
         }, 
+          resetChat: (state) => {
+            state.selectedUsers = [];
+            state.selectedUser = null;
+        }
     }
 })
-export const { setSelectedUser, addUser } =chatSlice.actions;
+export const { setSelectedUser, addUser, resetChat } =chatSlice.actions;
 export default chatSlice.reducer

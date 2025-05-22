@@ -82,7 +82,7 @@ const ClientDashboard = () => {
                   <h2 className='text-xl font-semibold text-gray-700'>Open Gigs</h2>
                   <span className='text-2xl font-bold text-blue-600'>{proposalCount}</span>
                 </div>
-                <p className='text-gray-500 text-sm'>TMonitor your active gigs. Make edits or close listings if you've found a freelancer.</p>
+                <p className='text-gray-500 text-sm'>Monitor your active gigs. Make edits or close listings if you've found a freelancer.</p>
               </div>
 
               {/* Manage Hiring */}
@@ -91,7 +91,7 @@ const ClientDashboard = () => {
                   <h2 className='text-xl font-semibold text-gray-700'>Client Hub</h2>
                 </div>
                 <p className='text-gray-500 text-sm mb-6'>Track proposals and hiring progress. Stay in control of project timelines.</p>
-                <div className="flex justify-between gap-4">
+                <div className="flex justify-between gap-4 flex-col md:flex-row">
                   <Link to='/proposals' className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm font-semibold transition w-full text-center">View Submitted Proposals.</Link>
                   <Link to="/payments" className="px-4 py-2   bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 text-sm font-semibold transition w-full text-center">See Ongoing Contracts</Link>
                 </div>
@@ -102,7 +102,9 @@ const ClientDashboard = () => {
                   <h2 className='text-xl font-semibold text-gray-700'>Message Center</h2>
                 </div>
                 <p className='text-gray-500 text-sm mb-6'>Manage conversations with freelancers. Follow up or provide feedback.</p>
-                <Link to='/messages' className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm font-semibold transition w-full text-center">Open Inbox</Link>
+                <div className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm font-semibold transition md:w-[30%]  text-center">
+                <Link to='/messages' className='' >Open Inbox</Link>
+                </div>
               </div>
             </div>
 
